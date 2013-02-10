@@ -6,12 +6,12 @@
 //The MIPS processor has one standard register file containing 32 32-bit registers for use by integer and logic instructions. These registers are called $0 through $31
 
 
-module regf //this is a ramRF memory module
+module RegisterFile //this is a ramRF memory module
 #(parameter addWidth=32, dataWidth=32)
 (input clk, input we3,
-input [3:0] A1,
-input [3:0] A2,
-input [3:0] A3,
+input [4:0] A1,
+input [4:0] A2,
+input [4:0] A3,
 input [31:0] WD3,
 input [4:0] fromALU,
 output reg [31:0] RD1,
