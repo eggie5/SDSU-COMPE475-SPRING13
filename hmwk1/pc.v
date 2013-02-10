@@ -5,16 +5,16 @@
 
 
 //this module is just a +4 iterator?
-module ProgramCounter
+module ProgramCounter #(parameter W = 32)
 (input clk,
 input clr,
-input [31:0] in,
-output reg [32:0] out);
+input [W-1:0] in,
+output reg [W-1:0] out);
 
 
 always @(posedge clk) begin
 	if (clr) out = 0;
-	else out <= in + 4; //iterate though instructions in instruction register (ism.v)
+	else out <= in + 1; //iterate though instructions in instruction register (ism.v)
 end
 
 endmodule

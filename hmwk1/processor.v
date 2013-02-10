@@ -1,6 +1,7 @@
 //this is the top-level module
 module processor
-(input clk, input [5:0] pc_in); //this should be input from the controller (or TB)
+(input clk, 
+input [5:0] pc_in); //this should be input from the controller (or TB)
 
 wire [5:0] pc_out;
 wire [5:0] pc_next;
@@ -8,6 +9,7 @@ wire [3:0] alu_sel;//from controller or regsiter file...?
 reg [31:0] RD1;
 reg [31:0] RD2;
 reg [31:0] alu_out;
+reg [31:0] dmem_out;
 
 
 parameter addWidth=6, dataWidth=16;
@@ -19,10 +21,11 @@ wire [dataWidth-1:0] instruction_addr;
 
 
 ProgramCounter pc (clk, pc_in, pc_out);
-ism #(addWidth, dataWidth) instruction_set (clk, we, en, pc_out, di, instruction); //writing dosn't make sense for this
+InstructionSet #(addWidth, dataWidth) instruction_set (clk, we, en, pc_out, di, ins); //writing dosn't make sense for this
 reg register_file (clk, ins[25:21], ins[20:16], ins[15:11], WD3?, RD1, RD2); //FIX: the A3 input bit width is not constant
 sign sign_ext (clk);
 alu myalu(alu_sel, RD1, RD2, alu_out);
+DataMemory #(addWidth, dataWidth) dmem (clk, we, en, alu_out, RD2, dmem_out);
 
 // initial begin
 // 	clk=0;

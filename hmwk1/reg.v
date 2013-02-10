@@ -8,7 +8,8 @@
 
 module RegisterFile //this is a ramRF memory module
 #(parameter addWidth=32, dataWidth=32)
-(input clk, input we3,
+(input clk, 
+input we3,
 input [4:0] A1,
 input [4:0] A2,
 input [4:0] A3,
@@ -20,12 +21,15 @@ output reg [31:0] RD2);
 reg [dataWidth-1:0] registers [addWidth-1:0];
 
 
+// asynchronous reads???
+//always @(*)
 	always @(posedge clk) begin
 		//these the 2 instructions operands, i.e. A & B in C=A+B
 		RD1 <= registers[A1]; //A
 		RD2 <= registers[A2]; //B
 	end
 
+		// synchronous writes; handles $zero register
 	always @(posedge clk) begin
 		if(we3)
 			registers[A3] <= WD3;
