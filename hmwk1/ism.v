@@ -18,7 +18,7 @@ module InstructionSet
 (input clk, we, en,
 input [addWidth-1:0] addr_in, //this is address from PC
 input [dataWidth-1:0] di,
-output reg [dataWidth-1:0] out_instruction); //instruction
+output [dataWidth-1:0] out_instruction); //instruction
 
 
 //this should be a 16 (column) x 64 (row) memory array 1024 B = 1 KB
@@ -27,14 +27,14 @@ output reg [dataWidth-1:0] out_instruction); //instruction
 //64
 //0000000000000001
 
-reg [dataWidth-1:0] instructions [2**addWidth-1:0]; //this is the actual program instructions
+	reg [dataWidth-1:0] instructions [2**addWidth-1:0]; //this is the actual program instructions
 
-always@(posedge clk) begin
-	if(en) begin
-		if(we) instructions[addr_in] <= di; //this should select a row and write di to it
-		
-		out_instruction <= instructions[addr_in]; // do doesn't get new din in this clock cycle
+	assign out_instruction = instructions[addr_in]; //async read
+	
+	always@(posedge clk) begin
+		if(en) begin
+			if(we) instructions[addr_in] <= di; //this should select a row and write di to it
+		end
 	end
-end
 
 endmodule

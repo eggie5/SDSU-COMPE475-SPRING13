@@ -5,7 +5,7 @@ module DataMemory
 (input clk, we, en,
 input [addWidth-1:0] addr,
 input [dataWidth-1:0] di,
-output reg [dataWidth-1:0] _do);
+output [dataWidth-1:0] _do);
 
 
 //this should be a 16 (column) x 64 (row) memory array 1024 B = 1 KB
@@ -14,14 +14,14 @@ output reg [dataWidth-1:0] _do);
 //64
 //0000000000000001
 
-reg [dataWidth-1:0] RAM [2**addWidth-1:0];
+	reg [dataWidth-1:0] RAM [2**addWidth-1:0];		
 
-always@(posedge clk) begin
-	if(en) begin
-		if(we) RAM[addr] <= di; //this should select a row and write di to it
-		
-		_do <= RAM[addr]; // do doesn't get new din in this clock cycle
+	assign _do = RAM[addr]; // asynch read
+
+	always@(posedge clk) begin
+		if(en) begin
+			if(we) RAM[addr] <= di; //this should select a row and write di to it
+		end
 	end
-end
 
 endmodule
