@@ -9,12 +9,17 @@ module ProgramCounter #(parameter W = 32)
 (input clk,
 input clr,
 input [W-1:0] in,
-output reg [W-1:0] out); // the content of this register is an address
+output reg [W-1:0] out,
+output reg [W-1:0] next); // the content of this register is an address
 
 
 	always @(posedge clk) begin
 		if (clr) out = 0;
-		else out <= in + 1; //iterate though instructions in instruction register (ism.v)
+		else out <= in; //iterate though instructions in instruction register (ism.v)
+	end
+	
+	always @(posedge clk) begin
+		next <= out + 1; 
 	end
 
 endmodule

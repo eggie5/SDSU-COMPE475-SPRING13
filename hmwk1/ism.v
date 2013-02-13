@@ -17,8 +17,9 @@ module InstructionSet
 #(parameter addWidth=6, dataWidth=16)
 (input clk, we, en,
 input [addWidth-1:0] addr_in, //this is address from PC
-input [dataWidth-1:0] di,
-output [dataWidth-1:0] out_instruction); //instruction
+// input [dataWidth-1:0] di,
+output [dataWidth-1:0] out_instruction
+); //instruction
 
 
 //this should be a 16 (column) x 64 (row) memory array 1024 B = 1 KB
@@ -31,10 +32,10 @@ output [dataWidth-1:0] out_instruction); //instruction
 
 	assign out_instruction = instructions[addr_in]; //async read
 	
-	always@(posedge clk) begin
-		if(en) begin
-			if(we) instructions[addr_in] <= di; //this should select a row and write di to it
-		end
-	end
+	// always@(posedge clk) begin
+	// 	if(en) begin
+	// 		if(we) instructions[addr_in] <= di; //this should select a row and write di to it
+	// 	end
+	// end
 
 endmodule
