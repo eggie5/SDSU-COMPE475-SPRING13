@@ -5,7 +5,7 @@
 
 
 //this module is just a +4 iterator?
-module ProgramCounter #(parameter W = 32)
+module ProgramCounter #(parameter W = 6)
 (input clk,
 input clr,
 input mux_sel, //from controller

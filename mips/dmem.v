@@ -1,7 +1,7 @@
 //Synchronous RAM, always read, read-first mode
 
 module DataMemory
-#(parameter addWidth=6, dataWidth=16)
+#(parameter addWidth=32, dataWidth=6)
 (input clk, we, en,
 input [addWidth-1:0] addr,
 input [dataWidth-1:0] di,
