@@ -1,0 +1,94 @@
+#! /usr/local/bin/vvp
+:ivl_version "0.10.0 (devel)" "(s20120501-151-gb32e1bc)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "system";
+:vpi_module "vhdl_sys";
+:vpi_module "v2005_math";
+:vpi_module "va_math";
+S_0x7fcd504062c0 .scope module, "ProgramCounter_tb" "ProgramCounter_tb" 2 3;
+ .timescale 0 0;
+P_0x7fcd5040c498 .param/l "W" 0 2 4, +C4<0100000>;
+v0x7fcd5041c6e0_0 .var "branch", 31 0;
+v0x7fcd5041c790_0 .var "clk", 0 0;
+v0x7fcd5041c820_0 .var "clr", 0 0;
+v0x7fcd5041c8f0_0 .var "mux_sel", 0 0;
+v0x7fcd5041c9a0_0 .net "out", 31 0, v0x7fcd5041c570_0;  1 drivers 
+S_0x7fcd50406400 .scope module, "pc" "ProgramCounter" 2 11, 3 8 0, S_0x7fcd504062c0;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "clk"
+    .port_info 1 /INPUT 1 "clr"
+    .port_info 2 /INPUT 1 "mux_sel"
+    .port_info 3 /INPUT 32 "branch"
+    .port_info 4 /OUTPUT 32 "out"
+P_0x7fcd50404e08 .param/l "W" 0 3 8, +C4<0100000>;
+v0x7fcd5040c0c0_0 .net "branch", 31 0, v0x7fcd5041c6e0_0;  1 drivers 
+v0x7fcd5041c3a0_0 .net "clk", 0 0, v0x7fcd5041c790_0;  1 drivers 
+v0x7fcd5041c440_0 .net "clr", 0 0, v0x7fcd5041c820_0;  1 drivers 
+v0x7fcd5041c4d0_0 .net "mux_sel", 0 0, v0x7fcd5041c8f0_0;  1 drivers 
+v0x7fcd5041c570_0 .var "out", 31 0;
+E_0x7fcd5040bb10 .event posedge, v0x7fcd5041c3a0_0;
+    .scope S_0x7fcd50406400;
+T_0 ;
+    %wait E_0x7fcd5040bb10;
+    %load/v 8, v0x7fcd5041c440_0, 1;
+    %jmp/0xz  T_0.0, 8;
+    %set/v v0x7fcd5041c570_0, 0, 32;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/v 8, v0x7fcd5041c4d0_0, 1;
+    %jmp/0  T_0.2, 8;
+    %load/v 9, v0x7fcd5040c0c0_0, 32;
+    %jmp/1  T_0.4, 8;
+T_0.2 ; End of true expr.
+    %ix/load 0, 1, 0;
+    %load/vp0 41, v0x7fcd5041c570_0, 32;
+    %jmp/0  T_0.3, 8;
+ ; End of false expr.
+    %blend  9, 41, 32; Condition unknown.
+    %jmp  T_0.4;
+T_0.3 ;
+    %mov 9, 41, 32; Return false value
+T_0.4 ;
+    %ix/load 0, 32, 0;
+    %assign/v0 v0x7fcd5041c570_0, 0, 9;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0;
+    .scope S_0x7fcd504062c0;
+T_1 ;
+    %vpi_call 2 15 "$display", "time\011CLK\011clr\011 mux_sel\011 branch\011 out" {0 0};
+    %vpi_call 2 16 "$monitor", "%g\011%b\011%d\011%b\011%b\011%b", $time, v0x7fcd5041c790_0, v0x7fcd5041c820_0, v0x7fcd5041c8f0_0, v0x7fcd5041c6e0_0, v0x7fcd5041c9a0_0 {0 0};
+    %set/v v0x7fcd5041c790_0, 0, 1;
+    %set/v v0x7fcd5041c820_0, 0, 1;
+    %set/v v0x7fcd5041c8f0_0, 0, 1;
+    %set/v v0x7fcd5041c6e0_0, 0, 32;
+    %wait E_0x7fcd5040bb10;
+    %set/v v0x7fcd5041c820_0, 1, 1;
+    %wait E_0x7fcd5040bb10;
+    %set/v v0x7fcd5041c820_0, 0, 1;
+    %wait E_0x7fcd5040bb10;
+    %wait E_0x7fcd5040bb10;
+    %wait E_0x7fcd5040bb10;
+    %wait E_0x7fcd5040bb10;
+    %set/v v0x7fcd5041c8f0_0, 1, 1;
+    %movi 8, 127, 32;
+    %set/v v0x7fcd5041c6e0_0, 8, 32;
+    %wait E_0x7fcd5040bb10;
+    %vpi_call 2 31 "$finish" {0 0};
+    %end;
+    .thread T_1;
+    .scope S_0x7fcd504062c0;
+T_2 ;
+    %delay 1, 0;
+    %load/v 8, v0x7fcd5041c790_0, 1;
+    %inv 8, 1;
+    %set/v v0x7fcd5041c790_0, 8, 1;
+    %jmp T_2;
+    .thread T_2;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "pc_tb.v";
+    "./pc.v";
