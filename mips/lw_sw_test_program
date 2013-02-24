@@ -1,7 +1,19 @@
+//This would be the output of an assembler which translate my
+//assembly program
+//lw $t0, 0($2)
+//lw $t1, 4($2)
+//sw $t1, 0($2)
+//sw $t0, 4($2)
+//assembly > assembler > object file > linker > executable > loader > memory
 //this will be the MPU's instruction set to be loaded into memory
-0011
-0010
-0001
-0000
-0100
-0101
+//so this is MIPS specific machine language
+//these are i-type instructions
+//lw has an opcode of 35
+//e.g.: 
+//lw $s3, -24($s4)
+//op=35, rs=20, rt=19, imm=-24
+//0x8E93FFE8
+//1000 1110 1001 0011 1111 1111 1110 1000
+//
+//lw $s0, 0($s0) => 35, 0, 0, 0 => 1000 1000 0000 0000 0000 0000 0000 0000  => 88000000
+1000_1000_0000_0000_0000_0000_0000_0000

@@ -14,6 +14,8 @@ output RegWrite
 	assign ALUControl = 3'b010; //' //for lw instruction
 	assign ALUSrc = 1; // get ALU soure B from sign extender
 	assign MemToReg = 0; //skip data mem, i.e. this is lw or sw OP
+	
+	//TODO: add the PCSource and logic here
 
 
 endmodule

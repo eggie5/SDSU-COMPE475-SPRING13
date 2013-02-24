@@ -18,13 +18,13 @@ reg [8:0] controls;
           memtoreg, jump, aluop} = controls;
   always @ (*)
     case(op)
-      6íb000000: controls = 9íb110000010; //Rtyp
-      6íb100011: controls = 9íb101001000; //LW
-      6íb101011: controls = 9íb001010000; //SW
-      6íb000100: controls = 9íb000100001; //BEQ
-      6íb001000: controls = 9íb101000000; //ADDI
-      6íb000010: controls = 9íb000000100; //J
-      default:  controls = 9íbxxxxxxxxx; //???
+      6`b000000: controls = 9`b110000010; //Rtyp
+      6`b100011: controls = 9`b101001000; //LW
+      6`b101011: controls = 9`b001010000; //SW
+      6`b000100: controls = 9`b000100001; //BEQ
+      6`b001000: controls = 9`b101000000; //ADDI
+      6`b000010: controls = 9`b000000100; //J
+      default:   controls = 9`bxxxxxxxxx; //???
     endcase
 endmodule
 

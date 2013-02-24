@@ -1,9 +1,9 @@
 //Synchronous RAM, always read, read-first mode
 
 module DataMemory
-#(parameter addWidth=32, dataWidth=6)
+#(parameter addWidth=6, dataWidth=32)
 (input clk, we, en,
-input [addWidth-1:0] addr,
+input [dataWidth-1:0] addr,
 input [dataWidth-1:0] di,
 output [dataWidth-1:0] _do);
 
@@ -14,7 +14,7 @@ output [dataWidth-1:0] _do);
 //64
 //0000000000000001
 
-	reg [dataWidth-1:0] RAM [2**addWidth-1:0];		
+	reg [dataWidth-1:0] RAM [2**addWidth-1:0];
 
 	assign _do = RAM[addr]; // asynch read
 

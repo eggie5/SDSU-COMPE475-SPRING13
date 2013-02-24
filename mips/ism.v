@@ -7,10 +7,14 @@
 // while it's being decoded and executed.
 
 module InstructionSet
-#(parameter addWidth=32, dataWidth=6)
+#(parameter addWidth=6, dataWidth=32)
 (input [addWidth-1:0] addr_in, //this is address from PC
  output [dataWidth-1:0] out_instruction
 ); 
+
+//add test program to instuction memory
+//this would be done by compiler tool chain (loader)
+initial $readmemb("lw_sw_test_program", instructions);
 
 
 //this should be a 32 (column) x 64 (row) memory array 1024 B = 1 KB

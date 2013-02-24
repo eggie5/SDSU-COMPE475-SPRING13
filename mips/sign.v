@@ -1,6 +1,6 @@
 module SignExtender #(parameter n = 16)
 (input [15:0] in,
-output reg [31:0] extended);
+output [31:0] extended);
 
 
 	// assign extended = $signed(in);
