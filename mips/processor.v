@@ -72,11 +72,11 @@ Instr_Decode decoder (ins, Opcode, R1, R2, R3, Immediate, Jump, Funct);
 //takes op and function from instruction
 Controller mock_controller (Opcode, Funct, alu_zero_out, MemToReg, MemWrite, PCSrc, ALUSrc, RegDest, RegWrite, Jump, ALUControl); 
 
-MUX21 #(5) who_goes_to_A3_of_reg (R2, R3, RegDest, WriteReg);
+MUX21 #(5) who_goes_to_A3_of_reg (R3, R2, RegDest, WriteReg);
 RegisterFile register_file (clk, RegWrite, R1, R2, WriteReg, result, RD1, RD2); //A3 comes from mux on above line! RegWrite from controller
 
 SignExtender extenderbender (Immediate, SignImm);
-MUX21 alu_src_B_mux (RD2, SignImm, ALUSrc, ALU_SrcB); //decides what input ALU port B gets
+MUX21 alu_src_B_mux (SignImm, RD2, ALUSrc, ALU_SrcB); //decides what input ALU port B gets
 ALU myalu(ALUControl, RD1, ALU_SrcB, alu_out, alu_zero_out);
 
 
@@ -91,16 +91,16 @@ initial begin
 	pc_clr=0;
 	pc_mux_sel=0;
 	pc_branch=0;
-	$display("time\tCLK\tpc_out\t\tins\t\t\t\tALUSrc\tSrcA\tSrcB\tALUResult\tMemWrite MemToReg Result"); //Left 
-	$monitor("%g\t%b\t%d\t%b\t%b%d%d%d\t\t%d\t%d\t%b", $time, clk, pc_out, ins, ALUSrc, RD1, ALU_SrcB, alu_out, MemWrite, MemToReg, result);
+	$display("time\tCLK\tpc_out\t\tins\t\t\t\tALUSrc\tALUSrcA\tALUSrcB\tALUResult\tMemWrite MemToReg Result\t\t\tRegWrite\tA3"); //Left 
+	$monitor("%g\t%b\t%d\t%b\t%b%d%d%d\t\t%d\t%d\t%b\t%b\t%d", $time, clk, pc_out, ins, ALUSrc, RD1, ALU_SrcB, alu_out, MemWrite, MemToReg, result, RegWrite, WriteReg);
 	@(posedge clk) pc_clr=1;
 	@(posedge clk) pc_clr=0;
 	@(posedge clk)
 	@(posedge clk)
 	@(posedge clk)
 	@(posedge clk)
-		@(posedge clk)
-			@(posedge clk)
+	@(posedge clk)
+	@(posedge clk)
 	
 	$finish;
 end
