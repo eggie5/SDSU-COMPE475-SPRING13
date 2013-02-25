@@ -11,10 +11,12 @@ reg [4:0] A3; //this comes from 21mux of R2 and R3 of instruction
 reg [31:0] WD3;
 wire [31:0] RD1;
 wire [31:0] RD2;
+reg pr;
 
-RegisterFile #(addWidth, dataWidth) register (clk, we3, A1, A2, A3, WD3, RD1, RD2);
+RegisterFile #(addWidth, dataWidth) register (clk, we3, A1, A2, A3, WD3, RD1, RD2, pr);
 
 integer index;
+	integer fp, i; 
 
 initial begin
 	//initial values
@@ -41,9 +43,13 @@ initial begin
 	@(posedge clk)
 		
 	//how can I do a memory dump to verify to TA??
+	pr=1;
+/*	$dumpfile("data.txt");*/
+	
 
 	$finish;
 end
+
 
 always #1 clk=~clk;
 

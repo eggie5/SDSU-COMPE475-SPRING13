@@ -14,7 +14,7 @@ module InstructionSet
 
 //add test program to instuction memory
 //this would be done by compiler tool chain (loader)
-initial $readmemb("lw_sw_test_program", instructions);
+initial $readmemb("sw_program", instructions);
 
 
 //this should be a 32 (column) x 64 (row) memory array 1024 B = 1 KB

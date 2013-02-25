@@ -62,6 +62,11 @@ wire [15:0] Immediate;
 wire [25:0] Jump;
 wire [5:0] Funct;
 
+wire cjump;
+
+integer fp;
+integer i;
+reg pr;
 
 ProgramCounter #(PCW) pc (clk, pc_clr, pc_mux_sel, pc_branch, pc_out);
 InstructionSet #(addWidth, dataWidth) instruction_set (pc_out, ins); //input: pc, output: instruction
@@ -70,10 +75,10 @@ InstructionSet #(addWidth, dataWidth) instruction_set (pc_out, ins); //input: pc
 Instr_Decode decoder (ins, Opcode, R1, R2, R3, Immediate, Jump, Funct);
 
 //takes op and function from instruction
-Controller mock_controller (Opcode, Funct, alu_zero_out, MemToReg, MemWrite, PCSrc, ALUSrc, RegDest, RegWrite, Jump, ALUControl); 
+Controller mock_controller (Opcode, Funct, alu_zero_out, MemToReg, MemWrite, PCSrc, ALUSrc, RegDest, RegWrite, cjump, ALUControl); 
 
 MUX21 #(5) who_goes_to_A3_of_reg (R3, R2, RegDest, WriteReg);
-RegisterFile register_file (clk, RegWrite, R1, R2, WriteReg, result, RD1, RD2); //A3 comes from mux on above line! RegWrite from controller
+RegisterFile register_file (clk, RegWrite, R1, R2, WriteReg, result, RD1, RD2, pr); //A3 comes from mux on above line! RegWrite from controller
 
 SignExtender extenderbender (Immediate, SignImm);
 MUX21 alu_src_B_mux (SignImm, RD2, ALUSrc, ALU_SrcB); //decides what input ALU port B gets
@@ -84,27 +89,65 @@ DataMemory #(addWidth, dataWidth) dmem (clk, MemWrite, alu_out, RD2, dmem_out); 
 
 MUX21 alu_result_mux (dmem_out, alu_out, MemToReg, result); //0 for lw or sd inst. or 1 for R type ins. like ADD, etc
 
-always #1 clk=~clk;
+always #5 clk=~clk;
 
 initial begin
+
+fp = $fopen("register_file_before.dump"); 
+for (i = 0; i <= 31; i = i + 1) 
+	$fdisplayb(fp, register_file.registers[i]); 
+$fclose(fp);
+
+fp = $fopen("dmem_before.dump"); 
+for (i = 0; i <= 63; i = i + 1) 
+	$fdisplayb(fp, dmem.RAM[i]); 
+$fclose(fp);
+
+
 	clk=0;
-	pc_clr=0;
+	@(posedge clk) pc_clr=1; //reset PC
 	pc_mux_sel=0;
 	pc_branch=0;
-	$display("time\tCLK\tpc_out\t\tins\t\t\t\tALUSrc\tALUSrcA\tALUSrcB\tALUResult\tMemWrite MemToReg Result\t\t\tRegWrite\tA3"); //Left 
-	$monitor("%g\t%b\t%d\t%b\t%b%d%d%d\t\t%d\t%d\t%b\t%b\t%d", $time, clk, pc_out, ins, ALUSrc, RD1, ALU_SrcB, alu_out, MemWrite, MemToReg, result, RegWrite, WriteReg);
-	@(posedge clk) pc_clr=1;
+	$display("CLK\tpc_out\t\tins\t\t\t\tRD2\tALUSrcA\tALUSrcB\tALUResult\tMemWrite MemToReg Result\t\t\tRegWrite\tA3"); //Left 
+	$monitor("%b\t%d\t%b%d%d%d%d\t\t%d\t%d\t%b\t%b\t%d", clk, pc_out, ins, RD2, RD1, ALU_SrcB, alu_out, MemWrite, MemToReg, result, RegWrite, WriteReg);
 	@(posedge clk) pc_clr=0;
 	@(posedge clk)
+	@(posedge clk) 
 	@(posedge clk)
 	@(posedge clk)
 	@(posedge clk)
 	@(posedge clk)
-	@(posedge clk)
+	@(posedge clk) 
+	@(posedge clk) 
+	@(posedge clk) 
+	@(posedge clk) 
+	@(posedge clk) 
+	@(posedge clk) 
+	
+
+
+	pr=1;
+	
+	fp = $fopen("register_file_after.dump"); 
+	for (i = 0; i <= 31; i = i + 1) 
+		$fdisplayb(fp, register_file.registers[i]); 
+	$fclose(fp);
+	
+	fp = $fopen("dmem_after.dump"); 
+	for (i = 0; i <= 63; i = i + 1) 
+		$fdisplayb(fp, dmem.RAM[i]); 
+	$fclose(fp);
+	
 	
 	$finish;
+		
 end
 
+initial
+ begin
+    $dumpfile("test.vcd");
+    $dumpvars(0,processor);
+ end
 
 endmodule
 

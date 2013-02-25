@@ -18,7 +18,7 @@
 
 
 module RegisterFile //this is a ramRF memory module
-#(parameter addWidth=32, dataWidth=5)
+#(parameter addWidth=32, dataWidth=32)
 (input clk, 
 input we3, //from controller
 input [4:0] A1,
@@ -26,12 +26,16 @@ input [4:0] A2,
 input [4:0] A3,
 input [31:0] WD3,
 output reg [31:0] RD1,
-output reg [31:0] RD2);
+output reg [31:0] RD2,
+input pr);
 
 reg [dataWidth-1:0] registers [addWidth-1:0];
 
+integer i;
 
 initial $readmemb("reg.mem", registers);
+
+
 
 	// asynchronous reads???
 	always @(posedge clk) begin
