@@ -1,5 +1,6 @@
 `include "alu.v"
-`include "controller.v"
+/*`include "controller.v"*/
+`include "template.v"
 `include "pc.v"
 `include "dmem.v"
 `include "ins_decode.v"
@@ -68,7 +69,8 @@ InstructionSet #(addWidth, dataWidth) instruction_set (pc_out, ins); //input: pc
 //decode instrution for convience
 Instr_Decode decoder (ins, Opcode, R1, R2, R3, Immediate, Jump, Funct);
 
-Controller mock_controller (Opcode, Funct, MemToReg, MemWrite, Branch, ALUControl, ALUSrc, RegDest, RegWrite);//takes op and function from instruction
+//takes op and function from instruction
+Controller mock_controller (Opcode, Funct, alu_zero_out, MemToReg, MemWrite, PCSrc, ALUSrc, RegDest, RegWrite, Jump, ALUControl); 
 
 MUX21 #(5) who_goes_to_A3_of_reg (R2, R3, RegDest, WriteReg);
 RegisterFile register_file (clk, RegWrite, R1, R2, WriteReg, result, RD1, RD2); //A3 comes from mux on above line! RegWrite from controller
@@ -78,7 +80,7 @@ MUX21 alu_src_B_mux (RD2, SignImm, ALUSrc, ALU_SrcB); //decides what input ALU p
 ALU myalu(ALUControl, RD1, ALU_SrcB, alu_out, alu_zero_out);
 
 
-DataMemory #(addWidth, dataWidth) dmem (clk, MemWrite, en, alu_out, RD2, dmem_out); //MemWrite from controller
+DataMemory #(addWidth, dataWidth) dmem (clk, MemWrite, alu_out, RD2, dmem_out); //MemWrite from controller
 
 MUX21 alu_result_mux (alu_out, dmem_out, MemToReg, result); //0 for lw or sd inst. or 1 for R type ins. like ADD, etc
 
@@ -89,8 +91,8 @@ initial begin
 	pc_clr=0;
 	pc_mux_sel=0;
 	pc_branch=0;
-	$display("time\tCLK\tpc_out\t\tins\t\t\t\tALUSrc\tSrcA\tSrcB"); //Left off fleshing this out.... 2/23/13 11:40 PM
-	$monitor("%g\t%b\t%d\t%b\t%b%d%d", $time, clk, pc_out, ins, ALUSrc, RD1, ALU_SrcB);
+	$display("time\tCLK\tpc_out\t\tins\t\t\t\tALUSrc\tSrcA\tSrcB\tALUResult\tMemWrite"); //Left off fleshing this out.... 2/23/13 11:40 PM
+	$monitor("%g\t%b\t%d\t%b\t%b%d%d%d\t\t%d", $time, clk, pc_out, ins, ALUSrc, RD1, ALU_SrcB, alu_out, MemWrite);
 	@(posedge clk) pc_clr=1;
 	@(posedge clk) pc_clr=0;
 	@(posedge clk)
@@ -103,3 +105,5 @@ end
 
 
 endmodule
+
+//iverilog -o processor processor.v && ./processor

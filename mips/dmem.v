@@ -2,7 +2,7 @@
 
 module DataMemory
 #(parameter addWidth=6, dataWidth=32)
-(input clk, we, en,
+(input clk, we,
 input [dataWidth-1:0] addr,
 input [dataWidth-1:0] di,
 output [dataWidth-1:0] _do);
@@ -19,9 +19,7 @@ output [dataWidth-1:0] _do);
 	assign _do = RAM[addr]; // asynch read
 
 	always@(posedge clk) begin
-		if(en) begin
-			if(we) RAM[addr] <= di; //this should select a row and write di to it
-		end
+		if(we) RAM[addr] <= di; //this should select a row and write di to it
 	end
 
 endmodule
