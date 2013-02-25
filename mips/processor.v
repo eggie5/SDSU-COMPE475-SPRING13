@@ -82,7 +82,7 @@ ALU myalu(ALUControl, RD1, ALU_SrcB, alu_out, alu_zero_out);
 
 DataMemory #(addWidth, dataWidth) dmem (clk, MemWrite, alu_out, RD2, dmem_out); //MemWrite from controller
 
-MUX21 alu_result_mux (alu_out, dmem_out, MemToReg, result); //0 for lw or sd inst. or 1 for R type ins. like ADD, etc
+MUX21 alu_result_mux (dmem_out, alu_out, MemToReg, result); //0 for lw or sd inst. or 1 for R type ins. like ADD, etc
 
 always #1 clk=~clk;
 
@@ -91,14 +91,16 @@ initial begin
 	pc_clr=0;
 	pc_mux_sel=0;
 	pc_branch=0;
-	$display("time\tCLK\tpc_out\t\tins\t\t\t\tALUSrc\tSrcA\tSrcB\tALUResult\tMemWrite"); //Left off fleshing this out.... 2/23/13 11:40 PM
-	$monitor("%g\t%b\t%d\t%b\t%b%d%d%d\t\t%d", $time, clk, pc_out, ins, ALUSrc, RD1, ALU_SrcB, alu_out, MemWrite);
+	$display("time\tCLK\tpc_out\t\tins\t\t\t\tALUSrc\tSrcA\tSrcB\tALUResult\tMemWrite MemToReg Result"); //Left 
+	$monitor("%g\t%b\t%d\t%b\t%b%d%d%d\t\t%d\t%d\t%b", $time, clk, pc_out, ins, ALUSrc, RD1, ALU_SrcB, alu_out, MemWrite, MemToReg, result);
 	@(posedge clk) pc_clr=1;
 	@(posedge clk) pc_clr=0;
 	@(posedge clk)
 	@(posedge clk)
 	@(posedge clk)
 	@(posedge clk)
+		@(posedge clk)
+			@(posedge clk)
 	
 	$finish;
 end

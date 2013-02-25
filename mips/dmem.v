@@ -14,8 +14,15 @@ output [dataWidth-1:0] _do);
 //64
 //0000000000000001
 
+/*	always@(addr) begin
+		$display("read RAM[%b]", addr);
+	end*/
+	
+	
 	reg [dataWidth-1:0] RAM [2**addWidth-1:0];
-
+	
+		initial $readmemb("dmem.mem", RAM);
+	
 	assign _do = RAM[addr]; // asynch read
 
 	always@(posedge clk) begin

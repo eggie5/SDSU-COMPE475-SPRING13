@@ -15,7 +15,10 @@ output reg out_zero);
 			5:  out = a|~b;
 			6:  out = a-b;
 			7:  out = (a<b)?1:0;
-			default: $display("sel ERROR in ALU");
+			default begin 
+/*				$display("sel ERROR in ALU for: '%b'", sel);*/
+				out = 3'bxxx;
+			end
 		endcase
 		
 		out_zero = (out==0) ? 1'b0 : 0'b0;
