@@ -152,3 +152,15 @@ initial
 endmodule
 
 //iverilog -o processor processor.v && ./processor
+//to view waveform:
+/*
+Compile it:
+iverilog -o dsn counter_tb.v counter.v
+
+Then run it:
+
+vvp dsn
+
+Then look at the test.vcd waveform:
+
+gtkwave test.vcd &*/
