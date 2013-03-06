@@ -1,6 +1,6 @@
 `include "alu.v"
 /*`include "controller.v"*/
-`include "template.v"
+`include "controller.v"
 `include "pc.v"
 `include "dmem.v"
 `include "ins_decode.v"
@@ -89,7 +89,7 @@ DataMemory #(addWidth, dataWidth) dmem (clk, MemWrite, alu_out, RD2, dmem_out); 
 
 MUX21 alu_result_mux (dmem_out, alu_out, MemToReg, result); //0 for lw or sd inst. or 1 for R type ins. like ADD, etc
 
-always #5 clk=~clk;
+always #10 clk=~clk;
 
 initial begin
 
