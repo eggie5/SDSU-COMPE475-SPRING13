@@ -25,9 +25,8 @@ input [4:0] A1,
 input [4:0] A2,
 input [4:0] A3,
 input [31:0] WD3,
-output reg [31:0] RD1,
-output reg [31:0] RD2,
-input pr);
+output  [31:0] RD1,
+output  [31:0] RD2);
 
 reg [dataWidth-1:0] registers [addWidth-1:0];
 
@@ -38,11 +37,11 @@ initial $readmemb("reg.mem", registers);
 
 
 	// asynchronous reads???
-	always @(posedge clk) begin
+/*	always @(posedge clk) begin*/
 		//these the 2 instructions operands, i.e. A & B in C=A+B
-		RD1 <= registers[A1]; //A
-		RD2 <= registers[A2]; //B
-	end
+		assign RD1 = registers[A1]; //A
+		assign RD2 = registers[A2]; //B
+/*	end*/
 
 	// synchronous writes; handles $zero register
 	always @(posedge clk) begin

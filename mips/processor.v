@@ -1,5 +1,4 @@
 `include "alu.v"
-/*`include "controller.v"*/
 `include "controller.v"
 `include "pc.v"
 `include "dmem.v"
@@ -62,11 +61,10 @@ wire [15:0] Immediate;
 wire [25:0] Jump;
 wire [5:0] Funct;
 
-wire cjump;
 
 integer fp;
 integer i;
-reg pr;
+
 
 ProgramCounter #(PCW) pc (clk, pc_clr, pc_mux_sel, pc_branch, pc_out);
 InstructionSet #(addWidth, dataWidth) instruction_set (pc_out, ins); //input: pc, output: instruction
@@ -75,15 +73,14 @@ InstructionSet #(addWidth, dataWidth) instruction_set (pc_out, ins); //input: pc
 Instr_Decode decoder (ins, Opcode, R1, R2, R3, Immediate, Jump, Funct);
 
 //takes op and function from instruction
-Controller mock_controller (Opcode, Funct, alu_zero_out, MemToReg, MemWrite, PCSrc, ALUSrc, RegDest, RegWrite, cjump, ALUControl); 
+Controller controller (Opcode, Funct, alu_zero_out, MemToReg, MemWrite, PCSrc, ALUSrc, RegDest, RegWrite, cjump, ALUControl); 
 
 MUX21 #(5) who_goes_to_A3_of_reg (R3, R2, RegDest, WriteReg);
-RegisterFile register_file (clk, RegWrite, R1, R2, WriteReg, result, RD1, RD2, pr); //A3 comes from mux on above line! RegWrite from controller
+RegisterFile register_file (clk, RegWrite, R1, R2, WriteReg, result, RD1, RD2); //A3 comes from mux on above line! RegWrite from controller
 
 SignExtender extenderbender (Immediate, SignImm);
 MUX21 alu_src_B_mux (SignImm, RD2, ALUSrc, ALU_SrcB); //decides what input ALU port B gets
 ALU myalu(ALUControl, RD1, ALU_SrcB, alu_out, alu_zero_out);
-
 
 DataMemory #(addWidth, dataWidth) dmem (clk, MemWrite, alu_out, RD2, dmem_out); //MemWrite from controller
 
@@ -105,28 +102,20 @@ $fclose(fp);
 
 
 	clk=0;
-	@(posedge clk) pc_clr=1; //reset PC
 	pc_mux_sel=0;
 	pc_branch=0;
-	$display("CLK\tpc_out\t\tins\t\t\t\tRD2\tALUSrcA\tALUSrcB\tALUResult\tMemWrite MemToReg Result\t\t\tRegWrite\tA3"); //Left 
-	$monitor("%b\t%d\t%b%d%d%d%d\t\t%d\t%d\t%b\t%b\t%d", clk, pc_out, ins, RD2, RD1, ALU_SrcB, alu_out, MemWrite, MemToReg, result, RegWrite, WriteReg);
+	
+	$display("CLK pc\tins\t\tRD2\tALUSrcA\tALUSrcB\tALUResult\tMemWrite MemToReg\tResult\t\t\t\tRegWrite\tA3"); //Left 
+	$monitor("%b %d\t%h%d%d%d%d\t\t%d\t%d\t%b\t%b\t%d", clk, pc_out, ins, RD2, RD1, ALU_SrcB, alu_out, MemWrite, MemToReg, result, RegWrite, WriteReg);
+	@(posedge clk) pc_clr=1; //reset PC
 	@(posedge clk) pc_clr=0;
 	@(posedge clk)
 	@(posedge clk) 
 	@(posedge clk)
 	@(posedge clk)
 	@(posedge clk)
-	@(posedge clk)
-	@(posedge clk) 
-	@(posedge clk) 
-	@(posedge clk) 
-	@(posedge clk) 
-	@(posedge clk) 
-	@(posedge clk) 
 	
 
-
-	pr=1;
 	
 	fp = $fopen("register_file_after.dump"); 
 	for (i = 0; i <= 31; i = i + 1) 
