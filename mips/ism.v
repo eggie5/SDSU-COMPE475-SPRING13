@@ -20,6 +20,12 @@ module InstructionSet
 `ifdef LW_PROGRAM
 	initial $readmemb("lw_sw_test_program", instructions);
 `endif
+`ifdef PROGRAM1
+	initial $readmemb("program1", instructions);
+`endif
+`ifdef ADD
+	initial $readmemb("add", instructions);
+`endif
 
 
 

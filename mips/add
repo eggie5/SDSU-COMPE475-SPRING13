@@ -1,0 +1,19 @@
+//add $5, $2, $3  $5=2+5=7
+/*000000_00001_00001_00000_00000_100000*/
+
+//Write a program that adds the content of registers 28 and 29 and stores the result in register 30. 
+000000_11100_11101_11110_00000_100000 // $30 = 57
+
+//Then it adds the content of registers 30 and 31 and stores the result in register 30.
+000000_11110_11111_11110_00000_100000 //$30 = 88
+
+//Then it logical ors the content of registers 30 and 31 and stores the result in register 1.
+000000_11110_11111_00001_00000_100101 // $1 = 95
+
+//1011000 88
+//0011111 31
+//1011111 95
+
+
+//Then it adds the content of register 1 with the constant value of ‐10 and stores the result back in register 1.
+001000_00001_00001_1111111111110110 // $1 = $95-1 =85
