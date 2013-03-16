@@ -8,7 +8,7 @@ module ProgramCounter #(parameter W = 6)
 (input clk,
 input clr,
 input PCSrc, //from controller
-input [W-1:0] branch,
+input [W-1:0] branch, //TODO: what should the width of this reg be? I think 32...
 output reg [W-1:0] out); // the content of this register is an address
 
 

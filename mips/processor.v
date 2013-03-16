@@ -122,7 +122,12 @@ $fclose(fp);
 	@(posedge clk)
 	@(posedge clk)
 	@(posedge clk)
-	
+	@(posedge clk)
+	@(posedge clk)
+	@(posedge clk)
+	@(posedge clk)
+	@(posedge clk)
+	@(posedge clk)
 
 	
 	fp = $fopen("register_file_after.dump"); 
