@@ -29,6 +29,9 @@ module InstructionSet
 `ifdef HMWK3
 	initial $readmemb("hmwk3_program", instructions);
 `endif
+`ifdef HMWK4
+	initial $readmemh("memfile.dat", instructions);
+`endif
 
 
 
