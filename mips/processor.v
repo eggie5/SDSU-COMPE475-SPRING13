@@ -148,7 +148,7 @@ initial
 
 endmodule
 
-/*iverilog -o processor -DHMWK4 processor.v && ./processor*/
+// iverilog -o processor -DHMWK4 processor.v && ./processor
 //to view waveform:
 /*
 Compile it:
@@ -160,4 +160,5 @@ vvp dsn
 
 Then look at the test.vcd waveform:
 
-gtkwave test.vcd &*/
+gtkwave test.vcd &
+*/

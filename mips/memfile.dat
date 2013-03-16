@@ -6,9 +6,9 @@
 00a42820 //add  $5, $5, $4 =11
 10a7000a //beq  $5, $7, end  --- SHOULD SKIP
 0064202a //slt  $4, $3, $4  = 0
-10800001 //beq  $4, $0, around --- SHOULD TAKE, but it just INS +1 so the 9 is the next instruction
-20050000 //addi $5, $0, 0 SHOULD HAPPEN HAPPEN
-/*
-00e2202a
-00853820
-00e23822*/
+10800001 //beq  $4, $0, around --- SHOULD TAKE, but it just INS +1 so the 10 is the next instruction
+20050000 //addi $5, $0, 0 SHOULDNT HAPPEN HAPPEN HAPPEN
+00e2202a //slt $4, $7, $2 = 3 < 2 = 1
+00853820 //add  $7, $4, $5 = 1 + 11 = 12
+00e23822 //sub  $7, $7, $2 = 12 - 5 = 7
+/*101011_11011_00111_0000000000000101 //sw   $7, 28($3) -- $3=12*/

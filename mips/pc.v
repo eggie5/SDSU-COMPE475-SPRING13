@@ -4,7 +4,6 @@
 // length (in bytes) to the PC.
 
 
-//this module is just a +4 iterator?
 module ProgramCounter #(parameter W = 6)
 (input clk,
 input clr,
@@ -15,7 +14,7 @@ output reg [W-1:0] out); // the content of this register is an address
 
 	always @(posedge clk) begin
 		if (clr) out = 0;
-		else out <= (PCSrc) ? branch+out : out+1; //iterate though instructions in instruction register (ism.v)
+		else out <= (PCSrc) ? branch+(out+1) : out+1; //iterate though instructions in instruction register (ism.v)
 	end
 
 endmodule
