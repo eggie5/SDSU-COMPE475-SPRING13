@@ -14,8 +14,8 @@ reg clk;
 //pc
 parameter PCW=6;
 reg pc_clr;
-reg pc_mux_sel;
-reg [PCW-1:0] pc_branch;
+/*reg pc_mux_sel;*/
+/*reg [PCW-1:0] pc_branch;*/
 wire [PCW-1:0] pc_out;
 
 wire [31:0] RD1;
@@ -66,7 +66,7 @@ integer fp;
 integer i;
 
 
-ProgramCounter #(PCW) pc (clk, pc_clr, pc_mux_sel, pc_branch, pc_out);
+ProgramCounter #(PCW) pc (clk, pc_clr, PCSrc, SignImm, pc_out); //PCSrc is from controller
 InstructionSet #(addWidth, dataWidth) instruction_set (pc_out, ins); //input: pc, output: instruction
 
 //decode instrution for convience
@@ -102,8 +102,8 @@ $fclose(fp);
 
 
 	clk=0;
-	pc_mux_sel=0;
-	pc_branch=0;
+/*	pc_mux_sel=0;*/
+/*	pc_branch=0;*/
 	
 	$display("CLK pc\tins\t\tRD2\tALUSrcA\tALUSrcB\tALUResult\tMemWrite MemToReg\tResult\t\t\t\tRegWrite\tA3"); //Left 
 	$monitor("%b %d\t%h%d%d%d%d\t\t%d\t%d\t%b\t%b\t%d", clk, pc_out, ins, RD2, RD1, ALU_SrcB, alu_out, MemWrite, MemToReg, result, RegWrite, WriteReg);
