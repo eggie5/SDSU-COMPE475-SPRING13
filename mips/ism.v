@@ -26,6 +26,9 @@ module InstructionSet
 `ifdef ADD
 	initial $readmemb("add", instructions);
 `endif
+`ifdef HMWK3
+	initial $readmemb("hmwk3_program", instructions);
+`endif
 
 
 

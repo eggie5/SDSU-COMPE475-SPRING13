@@ -14,6 +14,5 @@
 //0011111 31
 //1011111 95
 
-
 //Then it adds the content of register 1 with the constant value of ‐10 and stores the result back in register 1.
-001000_00001_00001_1111111111110110 // $1 = $95-1 =85
+001000_00001_00001_1111111111110110 // $1 = $95-10 =85

@@ -114,6 +114,14 @@ $fclose(fp);
 	@(posedge clk)
 	@(posedge clk)
 	@(posedge clk)
+	@(posedge clk) 
+	@(posedge clk)
+	@(posedge clk)
+	@(posedge clk)
+	@(posedge clk) 
+	@(posedge clk)
+	@(posedge clk)
+	@(posedge clk)
 	
 
 	
@@ -140,7 +148,7 @@ initial
 
 endmodule
 
-//iverilog -o processor processor.v && ./processor
+/*iverilog -o processor -DHMWK3 processor.v && ./processor*/
 //to view waveform:
 /*
 Compile it:

@@ -30,8 +30,6 @@ output  [31:0] RD2);
 
 reg [dataWidth-1:0] registers [addWidth-1:0];
 
-integer i;
-
 initial $readmemb("reg.mem", registers);
 
 

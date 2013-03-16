@@ -1,0 +1,29 @@
+//lw instructions
+100011_00000_11100_0000000000000000 //$28 = D[0+0=0] = -31
+100011_00000_11101_0000000000000001 //$29 = D[0+1=1] = -30
+100011_00000_11110_0000000000000010 //$30 = D[0+2=2] = -29
+100011_00000_11111_0000000000000011 //$31 = D[0+3=3] = -28
+
+//sw instructions
+101011_11011_11100_0000000000000101 // D[27+5=32] = $28 = -31
+101011_11011_11101_0000000000000110 // D[27+6=33] = $29 = -30
+101011_11011_11110_0000000000000111 // D[27+7=34] = $30 = -29
+101011_11011_11111_0000000000001000 // D[27+8=35] = $31 = -28
+
+//add addi or instructions
+//Write a program that adds the content of registers 28 and 29 and stores the result in register 30. 
+000000_11100_11101_11110_00000_100000 // $30 = $28 + $29 = -31 + -30 = -61
+
+//Then it adds the content of registers 30 and 31 and stores the result in register 30.
+000000_11110_11111_11110_00000_100000 //$30 = $30 + 31 = -61 + -28 = -89
+
+
+//Then it logical ors the content of registers 30 and 31 and stores the result in register 1.
+000000_11110_11111_00001_00000_100101 // $1 = $30 | $31 = -25
+
+//1011000 88
+//0011111 31
+//1011111 95
+
+//Then it adds the content of register 1 with the constant value of ‐10 and stores the result back in register 1.
+001000_00001_00001_1111111111110110 // $1 = -25+ -10 = -35
