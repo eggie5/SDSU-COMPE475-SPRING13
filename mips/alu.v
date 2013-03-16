@@ -21,7 +21,7 @@ output reg out_zero);
 			end
 		endcase
 		
-		out_zero = (out==0) ? 1'b0 : 0'b0;
+		out_zero = (out==0) ? 1'b1 : 1'b0;
 		
 	end
 	
