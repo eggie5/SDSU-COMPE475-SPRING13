@@ -92,12 +92,12 @@ initial begin
 
 fp = $fopen("register_file_before.dump"); 
 for (i = 0; i <= 31; i = i + 1) 
-	$fdisplayb(fp, register_file.registers[i]); 
+	$fdisplay(fp, register_file.registers[i]); 
 $fclose(fp);
 
 fp = $fopen("dmem_before.dump"); 
 for (i = 0; i <= 63; i = i + 1) 
-	$fdisplayb(fp, dmem.RAM[i]); 
+	$fdisplay(fp, dmem.RAM[i]); 
 $fclose(fp);
 
 
@@ -127,12 +127,12 @@ $fclose(fp);
 	
 	fp = $fopen("register_file_after.dump"); 
 	for (i = 0; i <= 31; i = i + 1) 
-		$fdisplayb(fp, register_file.registers[i]); 
+		$fdisplay(fp, register_file.registers[i]); 
 	$fclose(fp);
 	
 	fp = $fopen("dmem_after.dump"); 
 	for (i = 0; i <= 63; i = i + 1) 
-		$fdisplayb(fp, dmem.RAM[i]); 
+		$fdisplay(fp, dmem.RAM[i]); 
 	$fclose(fp);
 	
 	
@@ -148,7 +148,7 @@ initial
 
 endmodule
 
-/*iverilog -o processor -DHMWK3 processor.v && ./processor*/
+/*iverilog -o processor -DHMWK4 processor.v && ./processor*/
 //to view waveform:
 /*
 Compile it:
