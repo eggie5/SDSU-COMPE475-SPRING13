@@ -1,0 +1,29 @@
+[*]
+[*] GTKWave Analyzer v3.3.36 (w)1999-2012 BSI
+[*] Sat Mar 23 21:13:51 2013
+[*]
+[dumpfile] "/Users/eggie5/Development/SDSU-COMPE475-SPRING13/FSM/FSM_dump.vcd"
+[dumpfile_mtime] "Sat Mar 23 21:12:14 2013"
+[dumpfile_size] 929
+[savefile] "/Users/eggie5/Development/SDSU-COMPE475-SPRING13/FSM/FSM_waveform.sav"
+[timestart] 0
+[size] 1600 852
+[pos] -1 -1
+*-2.341217 13 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] FSM_tb.
+[sst_width] 203
+[signals_width] 157
+[sst_expanded] 1
+[sst_vpaned_height] 236
+@28
+FSM_tb.clk
+FSM_tb.RESET
+FSM_tb.din
+FSM_tb.mealy_out
+FSM_tb.moore_out
+@29
+FSM_tb.mealy.state_reg
+@24
+FSM_tb.moore.state_reg[1:0]
+[pattern_trace] 1
+[pattern_trace] 0

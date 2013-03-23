@@ -1,11 +1,14 @@
+`include "moore.v"
 `include "mealy.v"
-module mealyFSM_tb();
+module FSM_tb();
 reg clk;
 reg RESET;
 reg din;
-wire pe;
+wire moore_out;
+wire mealy_out;
 
-mealy_FSM mealy (clk, RESET, din, pe);
+mooreFSM moore (clk, RESET, din, moore_out);
+mealy_FSM mealy (clk, RESET, din, mealy_out);
 
 initial begin
 	//initialize values
@@ -19,6 +22,7 @@ initial begin
 	@(posedge clk) din=1; //posedge!
 	@(posedge clk) din=1; //not high but state 1
 	@(posedge clk)
+	@(posedge clk)
 	
 	$finish;
 
@@ -28,8 +32,8 @@ always #1 clk=~clk;
 
 
 initial begin
-    $dumpfile("mealy_dump.vcd");
-    $dumpvars(0,mealyFSM_tb);
+    $dumpfile("FSM_dump.vcd");
+    $dumpvars(0,FSM_tb);
 end
 
 endmodule

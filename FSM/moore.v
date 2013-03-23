@@ -1,4 +1,4 @@
-module FSM
+module mooreFSM
 (input clk, input RESET, input din, output pe);
 
 //state declartion
