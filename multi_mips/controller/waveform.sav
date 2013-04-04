@@ -1,0 +1,23 @@
+[*]
+[*] GTKWave Analyzer v3.3.36 (w)1999-2012 BSI
+[*] Thu Apr  4 06:08:47 2013
+[*]
+[dumpfile] "/Users/eggie5/Development/SDSU-COMPE475-SPRING13/multi_mips/controller/controller_tb.vcd"
+[dumpfile_mtime] "Thu Apr  4 06:07:59 2013"
+[dumpfile_size] 1658
+[savefile] "/Users/eggie5/Development/SDSU-COMPE475-SPRING13/multi_mips/controller/waveform.sav"
+[timestart] 0
+[size] 1600 852
+[pos] -1 -1
+*-5.216509 24 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] Controller_tb.
+[sst_width] 203
+[signals_width] 166
+[sst_expanded] 1
+[sst_vpaned_height] 246
+@28
+Controller_tb.controller.clk
+@25
+Controller_tb.controller.state_reg[2:0]
+[pattern_trace] 1
+[pattern_trace] 0

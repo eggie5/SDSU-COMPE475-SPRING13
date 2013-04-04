@@ -1,0 +1,169 @@
+$date
+	Wed Apr  3 23:07:59 2013
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module Controller_tb $end
+$var wire 1 ! MemToReg $end
+$var wire 1 " RegWrite $end
+$var wire 1 # RegDst $end
+$var wire 1 $ PCWrite $end
+$var wire 1 % PCSrc $end
+$var wire 1 & PCEn $end
+$var wire 1 ' MemWrite $end
+$var wire 1 ( IorD $end
+$var wire 1 ) IRWrite $end
+$var wire 1 * Branch $end
+$var wire 1 + ALUSrcB $end
+$var wire 1 , ALUSrcA $end
+$var wire 1 - ALUControl $end
+$var reg 6 . Funct [5:0] $end
+$var reg 6 / Opcode [5:0] $end
+$var reg 1 0 clk $end
+$var reg 1 1 reset $end
+$scope module controller $end
+$var wire 6 2 Funct [5:0] $end
+$var wire 6 3 Opcode [5:0] $end
+$var wire 1 0 clk $end
+$var wire 1 1 reset $end
+$var wire 1 ! zero $end
+$var reg 1 - ALUControl $end
+$var reg 2 4 ALUOp [1:0] $end
+$var reg 1 , ALUSrcA $end
+$var reg 1 + ALUSrcB $end
+$var reg 1 * Branch $end
+$var reg 1 ) IRWrite $end
+$var reg 1 % IorD $end
+$var reg 1 # MemToReg $end
+$var reg 1 ' MemWrite $end
+$var reg 1 & PCSrc $end
+$var reg 1 $ PCWrite $end
+$var reg 1 ( RegDst $end
+$var reg 1 " RegWrite $end
+$var reg 3 5 next_state [2:0] $end
+$var reg 3 6 state_reg [2:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+bx 6
+bx 5
+bx 4
+b100011 3
+b0 2
+x1
+00
+b100011 /
+b0 .
+x-
+x,
+x+
+x*
+x)
+x(
+x'
+x&
+x%
+x$
+x#
+x"
+z!
+$end
+#10
+1$
+1)
+0&
+b0 4
+1+
+0,
+0%
+b1 5
+b0 6
+11
+10
+#20
+00
+#30
+b10 5
+0*
+0$
+0)
+x&
+x+
+x,
+x%
+b1 6
+01
+10
+#40
+00
+#50
+0'
+0"
+0+
+1,
+b11 5
+b10 6
+10
+#60
+00
+#70
+b100 5
+1%
+b11 6
+10
+#80
+00
+#90
+1"
+1#
+0(
+b0 5
+b100 6
+b0 /
+b0 3
+10
+#100
+00
+#110
+b1 5
+1$
+1)
+0&
+1+
+0,
+0%
+b0 6
+10
+#120
+00
+#130
+0$
+0)
+x&
+x+
+x,
+x%
+b1 6
+10
+#140
+00
+#150
+10
+#160
+00
+#170
+10
+#180
+00
+#190
+10
+#200
+00
+#210
+10

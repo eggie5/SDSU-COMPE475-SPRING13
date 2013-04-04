@@ -10,7 +10,7 @@ DataPath dp (clk, MemToReg, RegDst, IorD, PCSrc, PCEn, ALUSrcA, ALUSrcB,
 	);
 
 
-Controller controller (clk, Opcode, Funct, //end of inputs
+Controller controller (clk, reset Opcode, Funct, //end of inputs
 	MemToReg, RegDst, IorD, PCSrc, PCEn, ALUSrcA, ALUSrcB, 
 	IRWrite, MemWrite, PCWrite, Branch, RegWrite, ALUControl
 	);
