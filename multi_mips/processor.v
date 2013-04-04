@@ -1,3 +1,4 @@
+`include "datapath/datapath.v"
 module Processor(input clk);
 
 wire [5:0] Opcode;

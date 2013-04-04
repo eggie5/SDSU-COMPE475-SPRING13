@@ -10,10 +10,10 @@ output [dataWidth-1:0] out //output insturction or generic data
 //add test program to instuction memory
 //this would be done by compiler tool chain (loader)
 `ifdef PROGRAM_1
-	initial $readmemb("sw_program", instructions);
+	initial $readmemb("sw_program", RAM);
 `endif
 `ifdef PROGRAM_2
-	initial $readmemh("memfile.dat", instructions);
+	initial $readmemh("memfile.dat", RAM);
 `endif
 
 

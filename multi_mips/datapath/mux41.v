@@ -6,7 +6,7 @@ module MUX41
  input [W-1:0] C,
  input [W-1:0] D,
  input [1:0]sel,
- output [W-1:0] out);
+ output reg [W-1:0] out);
 
 always @ (A or B or C or D or sel) 
 	case (sel) 
