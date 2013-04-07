@@ -2,7 +2,10 @@ module Controller
 (input clk, reset,
 input [5:0] Opcode, Funct,
 input zero,
-output reg MemToReg, RegDst, IorD, PCSrc, ALUSrcA, ALUSrcB, IRWrite, MemWrite, PCWrite, Branch, RegWrite, ALUControl
+output reg MemToReg, RegDst, IorD, PCSrc, ALUSrcA,
+output reg [1:0] ALUSrcB,
+output reg IRWrite, MemWrite, PCWrite, Branch, RegWrite,
+output reg [2:0] ALUControl
 );
 
 //??? in pdf

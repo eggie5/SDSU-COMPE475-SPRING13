@@ -1,17 +1,19 @@
 module Register
 #(parameter addWidth=5, dataWidth=32)
-(input clk, 
+(
+input clk, 
 input we3, //from controller
-input [4:0] A1,
-input [4:0] A2,
-input [4:0] A3,
-input [31:0] WD3,
-output  [31:0] RD1,
-output  [31:0] RD2);
+input [addWidth-1:0] A1,
+input [addWidth-1:0] A2,
+input [addWidth-1:0] A3,
+input [dataWidth-1:0] WD3,
+output  [dataWidth-1:0] RD1,
+output  [dataWidth-1:0] RD2
+);
 
 reg [dataWidth-1:0] registers [2**addWidth-1:0];
 
-initial $readmemb("reg.mem", registers);
+initial $readmemb("datapath/reg.mem", registers);
 
 
 		//these the 2 instructions operands, i.e. A & B in C=A+B

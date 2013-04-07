@@ -14,7 +14,7 @@ always @ (A or B or C or D or sel)
 	1 : out = B; 
 	2 : out = C; 
 	3 : out = D; 
-	default : $display("Error in SEL"); 
+	default : $display("Error in SEL: %b", sel); 
 endcase
 
 endmodule
