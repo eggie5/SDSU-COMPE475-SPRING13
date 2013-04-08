@@ -27,6 +27,7 @@ parameter SW=6'b101011;
 parameter R=0;
 parameter BEQ =6'b000100;
 parameter ADDI=6'b001000;
+parameter J=6'b000010;
 
 //state declartion
 reg [3:0] state_reg, next_state; //2 bits for 3 states  - not one-hot encoding
@@ -42,6 +43,7 @@ parameter S7=7; //WriteBack
 parameter S8=8; //Branch
 parameter S9=9; //ADDI Execute
 parameter S10=10; //ADDI WriteBack
+parameter S11=11; //Jump
 
 ALUDec aludec(Funct, ALUOp, ALUControl);
 
@@ -60,6 +62,7 @@ always @(state_reg) begin
 			else if(Opcode == R) next_state = S6;
 			else if(Opcode ==BEQ) next_state = S8;
 			else if(Opcode == ADDI) next_state=S9;
+			else if(Opcode == J) next_state=S11;
 			else next_state=S1; //loopback...?
 			end
 		S2: begin
@@ -75,6 +78,7 @@ always @(state_reg) begin
 		S8: next_state=S0; //reset
 		S9: next_state=S10;
 		S10: next_state=S0; //reset
+		S11: next_state=S0; //reset
 	endcase
 end
 
@@ -145,6 +149,10 @@ always @(state_reg) begin
 			RegDst=0;
 			MemToReg=0;
 			RegWrite=1;
+		end
+		S11: begin //jump
+			PCSrc=2'b10;
+			PCWrite=1;
 		end
 		default: 
 			$display("controller does not know state: %b", state_reg);
