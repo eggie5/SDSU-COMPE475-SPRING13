@@ -1,3 +1,4 @@
+`include "controller/alu_dec.v"
 module Controller
 (
 input clk, reset,
@@ -14,7 +15,7 @@ output reg MemWrite,
 output reg PCWrite, 
 output reg Branch, 
 output reg RegWrite,
-output reg [2:0] ALUControl
+output [2:0] ALUControl
 );
 
 //??? in pdf
@@ -23,6 +24,7 @@ reg [1:0] ALUOp;
 //CONSTANTS
 parameter LW=6'b100011;
 parameter SW=6'b101011;
+parameter R=0;
 
 //state declartion
 reg [2:0] state_reg, next_state; //2 bits for 3 states  - not one-hot encoding
@@ -33,7 +35,10 @@ parameter S2=2; //MemAdr
 parameter S3=3; //MemRead
 parameter S4=4; //MemWriteBack
 parameter S5=5; //MemWrite
+parameter S6=6; //Execute
+parameter S7=7; //WriteBack
 
+ALUDec aludec(Funct, ALUOp, ALUControl);
 
 always @(posedge clk or posedge reset) begin
 	if(reset) state_reg <= S0;
@@ -47,6 +52,7 @@ always @(state_reg) begin
 		S1: begin
 			if (Opcode == LW) next_state = S2; //next
 			else if(Opcode == SW) next_state = S2; //next
+			else if(Opcode == R) next_state = S6;
 			else next_state=S1; //loopback...?
 			end
 		S2: begin
@@ -57,6 +63,8 @@ always @(state_reg) begin
 		S3: next_state = S4;
 		S4: next_state = S0; //reset
 		S5: next_state = S0; //reset
+		S6: next_state=S7;
+		S7: next_state=S0; //reset
 	endcase
 end
 
@@ -71,7 +79,6 @@ always @(state_reg) begin
 			PCSrc=0;
 			IRWrite=1;
 			PCWrite=1;
-			ALUControl=3'b010;
 			end
 		S1: begin //decode
 			$display("S1");
@@ -83,7 +90,6 @@ always @(state_reg) begin
 			IRWrite=0;
 			PCWrite=0; 
 			Branch=0;
-			ALUControl=3'b010;
 			end
 		S2: begin //MemAdr
 			ALUSrcA=1;
@@ -91,7 +97,6 @@ always @(state_reg) begin
 			ALUOp=2'b00;
 			RegWrite=0;
 			MemWrite=0;
-			ALUControl=3'b010;
 			end
 		S3: begin //MemRead
 			IorD=1;
@@ -104,6 +109,17 @@ always @(state_reg) begin
 		S5: begin //MemWrite
 			IorD=1;
 			MemWrite=1;
+		end
+		S6: begin //execute
+			ALUSrcA=1;
+			ALUSrcB=0;
+			ALUOp=2'b10;
+			
+		end
+		S7: begin //Writeback
+			RegDst=1;
+			MemToReg=0;
+			RegWrite=1;
 		end
 		default: 
 			$display("controller does not know state: %b", state_reg);
