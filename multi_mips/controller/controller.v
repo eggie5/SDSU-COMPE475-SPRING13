@@ -32,6 +32,7 @@ parameter S1=1; //decode
 parameter S2=2; //MemAdr
 parameter S3=3; //MemRead
 parameter S4=4; //MemWriteBack
+parameter S5=5; //MemWrite
 
 
 always @(posedge clk or posedge reset) begin
@@ -50,12 +51,12 @@ always @(state_reg) begin
 			end
 		S2: begin
 			if(Opcode == LW) next_state = S3; //next
+			else if(Opcode == SW) next_state = S5; //next
 			else next_state = S2; //loopback
 			end
-		S3:
-			next_state = S4;
-		S4:
-			next_state = S0; //reset
+		S3: next_state = S4;
+		S4: next_state = S0; //reset
+		S5: next_state = S0; //reset
 	endcase
 end
 
@@ -70,7 +71,7 @@ always @(state_reg) begin
 			PCSrc=0;
 			IRWrite=1;
 			PCWrite=1;
-			ALUControl=2'b010;
+			ALUControl=3'b010;
 			end
 		S1: begin //decode
 			$display("S1");
@@ -82,7 +83,7 @@ always @(state_reg) begin
 			IRWrite=0;
 			PCWrite=0; 
 			Branch=0;
-			ALUControl=2'b010;
+			ALUControl=3'b010;
 			end
 		S2: begin //MemAdr
 			ALUSrcA=1;
@@ -90,7 +91,7 @@ always @(state_reg) begin
 			ALUOp=2'b00;
 			RegWrite=0;
 			MemWrite=0;
-			ALUControl=2'b010;
+			ALUControl=3'b010;
 			end
 		S3: begin //MemRead
 			IorD=1;
@@ -100,6 +101,10 @@ always @(state_reg) begin
 			MemToReg=1;
 			RegWrite=1;
 			end
+		S5: begin //MemWrite
+			IorD=1;
+			MemWrite=1;
+		end
 		default: 
 			$display("controller does not know state: %b", state_reg);
 	endcase
