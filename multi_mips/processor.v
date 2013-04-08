@@ -4,7 +4,9 @@
 module Processor(input clk, input reset);
 
 //controller
-wire MemToReg, RegDst, IorD, PCSrc, ALUSrcA, zero;
+wire MemToReg, RegDst, IorD;
+wire [1:0] PCSrc;
+wire ALUSrcA, zero;
 wire IRWrite;
 wire MemWrite, PCWrite, Branch, RegWrite;
 wire [1:0] ALUSrcB;

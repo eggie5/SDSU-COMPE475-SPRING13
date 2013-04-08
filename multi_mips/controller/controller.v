@@ -7,7 +7,7 @@ input zero,
 output reg MemToReg,
 output reg RegDst,
 output reg IorD,
-output reg PCSrc,
+output reg [1:0] PCSrc,
 output reg ALUSrcA,
 output reg [1:0] ALUSrcB,
 output reg IRWrite, 
@@ -89,19 +89,19 @@ always @(state_reg) begin
 			ALUSrcA=0;
 			ALUSrcB=2'b01;
 			ALUOp=2'b00;
-			PCSrc=0;
+			PCSrc=2'b00;
 			IRWrite=1;
 			PCWrite=1;
+			RegWrite=0;
+			MemWrite=0;
 			end
 		S1: begin //decode
-			IorD = 1'bx;
 			ALUSrcA=0;
 			ALUSrcB=2'b11;
 			ALUOp=2'b00;
-			PCSrc=1'bx;
+			IorD = 1'bx;
+			PCSrc=2'bxx;
 			IRWrite=0;
-			PCWrite=0; 
-			Branch=0;
 			end
 		S2: begin //MemAdr
 			ALUSrcA=1;
@@ -137,8 +137,9 @@ always @(state_reg) begin
 			ALUSrcA=1;
 			ALUSrcB=2'b00;
 			ALUOp=2'b01;
-			PCSrc=1;
+			PCSrc=2'b01;
 			Branch=1;
+			PCWrite=0;
 		end
 		S9: begin //ADDI Exectute
 			ALUSrcA=1;

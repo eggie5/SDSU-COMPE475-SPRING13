@@ -15,7 +15,8 @@ output [dataWidth-1:0] out //output insturction or generic data
 `ifdef HMWK5
 	initial begin
 	$display("loading program for HMWK 5");
-	$readmemb("datapath/memfile.dat", RAM);
+/*	$readmemb("datapath/mem.mem", RAM);*/
+	$readmemh("datapath/memfile.dat", RAM);
 	end
 `endif
 
