@@ -25,9 +25,11 @@ reg [1:0] ALUOp;
 parameter LW=6'b100011;
 parameter SW=6'b101011;
 parameter R=0;
+parameter BEQ =6'b000100;
+parameter ADDI=6'b001000;
 
 //state declartion
-reg [2:0] state_reg, next_state; //2 bits for 3 states  - not one-hot encoding
+reg [3:0] state_reg, next_state; //2 bits for 3 states  - not one-hot encoding
 
 parameter S0=0; //fetch/reset
 parameter S1=1; //decode
@@ -37,6 +39,9 @@ parameter S4=4; //MemWriteBack
 parameter S5=5; //MemWrite
 parameter S6=6; //Execute
 parameter S7=7; //WriteBack
+parameter S8=8; //Branch
+parameter S9=9; //ADDI Execute
+parameter S10=10; //ADDI WriteBack
 
 ALUDec aludec(Funct, ALUOp, ALUControl);
 
@@ -53,6 +58,8 @@ always @(state_reg) begin
 			if (Opcode == LW) next_state = S2; //next
 			else if(Opcode == SW) next_state = S2; //next
 			else if(Opcode == R) next_state = S6;
+			else if(Opcode ==BEQ) next_state = S8;
+			else if(Opcode == ADDI) next_state=S9;
 			else next_state=S1; //loopback...?
 			end
 		S2: begin
@@ -65,13 +72,15 @@ always @(state_reg) begin
 		S5: next_state = S0; //reset
 		S6: next_state=S7;
 		S7: next_state=S0; //reset
+		S8: next_state=S0; //reset
+		S9: next_state=S10;
+		S10: next_state=S0; //reset
 	endcase
 end
 
 always @(state_reg) begin
 	case(state_reg)
 		S0: begin//fetch
-			$display("S0");
 			IorD = 0;
 			ALUSrcA=0;
 			ALUSrcB=2'b01;
@@ -81,10 +90,9 @@ always @(state_reg) begin
 			PCWrite=1;
 			end
 		S1: begin //decode
-			$display("S1");
 			IorD = 1'bx;
-			ALUSrcA=1'bx;
-			ALUSrcB=2'bxx;
+			ALUSrcA=0;
+			ALUSrcB=2'b11;
 			ALUOp=2'b00;
 			PCSrc=1'bx;
 			IRWrite=0;
@@ -118,6 +126,23 @@ always @(state_reg) begin
 		end
 		S7: begin //Writeback
 			RegDst=1;
+			MemToReg=0;
+			RegWrite=1;
+		end
+		S8: begin //Branch
+			ALUSrcA=1;
+			ALUSrcB=2'b00;
+			ALUOp=2'b01;
+			PCSrc=1;
+			Branch=1;
+		end
+		S9: begin //ADDI Exectute
+			ALUSrcA=1;
+			ALUSrcB=2'b10;
+			ALUOp=2'b00;
+		end
+		S10: begin //ADDi writeback
+			RegDst=0;
 			MemToReg=0;
 			RegWrite=1;
 		end
