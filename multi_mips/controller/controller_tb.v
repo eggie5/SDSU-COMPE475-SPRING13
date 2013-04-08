@@ -1,38 +1,41 @@
-`include "controller.v"
+`include "controller/controller.v"
 module Controller_tb();
 
 reg clk, reset;
 reg [5:0] Opcode, Funct;
-reg zero;
-wire MemToReg, RegDst, IorD, PCSrc, ALUSrcA, ALUSrcB, IRWrite, MemWrite, PCWrite, Branch, RegWrite, ALUControl;
+wire MemToReg, RegDst, IorD, PCSrc, ALUSrcA, IRWrite, MemWrite, PCWrite, Branch, RegWrite;
+wire [1:0] ALUSrcB;
+wire [2:0] ALUControl;
 
-Controller controller (clk, reset, Opcode, Funct, //end of inputs
-	MemToReg, RegDst, IorD, PCSrc, PCEn, ALUSrcA, ALUSrcB, 
+Controller controller (clk, reset, Opcode, Funct, zero,//end of inputs
+	MemToReg, RegDst, IorD, PCSrc, ALUSrcA, ALUSrcB, 
 	IRWrite, MemWrite, PCWrite, Branch, RegWrite, ALUControl
-	);
+	);//PCEn
 	
 initial begin
 	clk=0;
-	Opcode=6'b100011; //lw
+	Opcode=0;//6'b100011; //lw
 	Funct=0;
 	
 	@(posedge clk) reset=1;
 	@(posedge clk) reset=0;
-	@(posedge clk) reset=0;
-	@(posedge clk) reset=0;
-	@(posedge clk) reset=0; Opcode=0;
-	@(posedge clk) reset=0;
-	@(posedge clk) reset=0;
-	@(posedge clk) reset=0;
-	@(posedge clk) reset=0;
-	@(posedge clk) reset=0;
-	@(posedge clk) reset=0;
+	$display("IorD=%b", IorD);
+	@(posedge clk);
+	@(posedge clk);
+	@(posedge clk);
+	@(posedge clk);
+	@(posedge clk);
+	@(posedge clk);
+	@(posedge clk);
+	@(posedge clk);
+	@(posedge clk);
+	$display("IorD=%b", IorD);
 	$finish;
 	
 end
 
 initial begin
-    $dumpfile("controller_tb.vcd");
+    $dumpfile("tmp/controller_tb.vcd");
     $dumpvars(0,Controller_tb);
  end
 
@@ -41,5 +44,5 @@ always #10 clk=~clk;
 
 endmodule
 
-
-//iverilog -o controller_tb controller_tb.v && ./controller_tb
+//run from project root
+//iverilog -o tmp/controller_tb controller/controller_tb.v && ./tmp/controller_tb

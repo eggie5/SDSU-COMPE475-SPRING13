@@ -57,7 +57,7 @@ wire alu_zero;
 wire [dataWidth-1:0] SignImm;
 
 //PC -- the width of these should be addWidth
-DFF #(addWidth) pc (clk, reset, PCEn, alu_mux_out, pc_reg_out);
+DFF #(addWidth) pc_dff (clk, reset, PCEn, alu_mux_out, pc_reg_out);
 MUX21 #(addWidth) pc_mux (pc_reg_out, ALUOut, IorD, Adr);
 
 //Mem
@@ -77,11 +77,11 @@ DFF #(dataWidth) dff_b (clk, 0, 1'b1, RD2, B);
 SignExtender sext(Immediate, SignImm);
 
 //ALU
-MUX21 #(dataWidth) srcA_mux(pc_reg_out, A, ALUSrcA, srcA_mux_out); // waht is the width on this one? 
-MUX41 #(dataWidth) srcB_mux(B, 32'b1, SignImm, SignImm<<2, ALUSrcB, srcB_mux_out) ;
-ALU alu(ALUControl, srcA_mux_out, srcB_mux_out, ALUResult, alu_zero);
+MUX21 #(dataWidth) srcA_mux (pc_reg_out, A, ALUSrcA, srcA_mux_out); // waht is the width on this one? 
+MUX41 #(dataWidth) srcB_mux (B, 32'b1, SignImm, SignImm<<2, ALUSrcB, srcB_mux_out) ; //the seocond port incr. PC by 1
+ALU alu (ALUControl, srcA_mux_out, srcB_mux_out, ALUResult, alu_zero);
 DFF #(dataWidth) dff_alu_result (clk, 0, 1'b1, ALUResult, ALUOut);
-MUX21 #(dataWidth) alu_mux(ALUResult, ALUOut, PCSrc, alu_mux_out);
+MUX21 #(dataWidth) alu_mux (ALUResult, ALUOut, PCSrc, alu_mux_out);
 
 assign PCEn = ((alu_zero & Branch) | PCWrite); // goes to pc
 

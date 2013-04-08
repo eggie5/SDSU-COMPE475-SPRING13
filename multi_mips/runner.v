@@ -1,4 +1,5 @@
 `include "processor.v"
+
 module runner();
 reg clk;
 reg reset;
@@ -8,7 +9,7 @@ integer i;
 
 always #1 clk=~clk;
 
-Processor processor(clk, reset);
+Processor processor (clk, reset);
 
 initial begin
 
@@ -19,12 +20,20 @@ initial begin
 	@(posedge clk) reset=0;
 	@(posedge clk);
 	@(posedge clk);
+	@(posedge clk);
+	@(posedge clk);
+	@(posedge clk);
 	
 	
 
 	fp = $fopen("tmp/mem_after.dump"); 
 	for (i = 0; i <= 63; i = i + 1) 
 		$fdisplayb(fp, processor.dp.mem.RAM[i]); 
+	$fclose(fp);
+	
+	fp = $fopen("tmp/reg_after.dump"); 
+	for (i = 0; i <= 31; i = i + 1) 
+		$fdisplayb(fp, processor.dp.reg_file.registers[i]); 
 	$fclose(fp);
 	
 	$finish;

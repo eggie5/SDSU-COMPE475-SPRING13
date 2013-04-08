@@ -1,10 +1,19 @@
 module Controller
-(input clk, reset,
+(
+input clk, reset,
 input [5:0] Opcode, Funct,
 input zero,
-output reg MemToReg, RegDst, IorD, PCSrc, ALUSrcA,
+output reg MemToReg,
+output reg RegDst,
+output reg IorD,
+output reg PCSrc,
+output reg ALUSrcA,
 output reg [1:0] ALUSrcB,
-output reg IRWrite, MemWrite, PCWrite, Branch, RegWrite,
+output reg IRWrite, 
+output reg MemWrite, 
+output reg PCWrite, 
+output reg Branch, 
+output reg RegWrite,
 output reg [2:0] ALUControl
 );
 
@@ -53,6 +62,7 @@ end
 always @(state_reg) begin
 	case(state_reg)
 		S0: begin//fetch
+			$display("S0");
 			IorD = 0;
 			ALUSrcA=0;
 			ALUSrcB=2'b01;
@@ -60,8 +70,10 @@ always @(state_reg) begin
 			PCSrc=0;
 			IRWrite=1;
 			PCWrite=1;
+			ALUControl=2'b010;
 			end
 		S1: begin //decode
+			$display("S1");
 			IorD = 1'bx;
 			ALUSrcA=1'bx;
 			ALUSrcB=2'bxx;
@@ -70,6 +82,7 @@ always @(state_reg) begin
 			IRWrite=0;
 			PCWrite=0; 
 			Branch=0;
+			ALUControl=2'b010;
 			end
 		S2: begin //MemAdr
 			ALUSrcA=1;
@@ -77,6 +90,7 @@ always @(state_reg) begin
 			ALUOp=2'b00;
 			RegWrite=0;
 			MemWrite=0;
+			ALUControl=2'b010;
 			end
 		S3: begin //MemRead
 			IorD=1;
@@ -86,6 +100,8 @@ always @(state_reg) begin
 			MemToReg=1;
 			RegWrite=1;
 			end
+		default: 
+			$display("controller does not know state: %b", state_reg);
 	endcase
 end
 
