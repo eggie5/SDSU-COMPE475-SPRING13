@@ -74,3 +74,14 @@ _ngo/
 _xmsgs/
 
 multi_mips/tmp
+*.vcd
+
+*.sav
+
+FSM/FSM_tb
+
+FSM/mealy_tb
+
+FSM/moore_tb
+
+mips/processor

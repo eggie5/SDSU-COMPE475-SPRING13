@@ -145,11 +145,10 @@ $fclose(fp);
 		
 end
 
-initial
- begin
-    $dumpfile("test.vcd");
-    $dumpvars(0,processor);
- end
+initial begin
+	$dumpfile("test.vcd");
+	$dumpvars(0,processor);
+end
 
 endmodule
 
