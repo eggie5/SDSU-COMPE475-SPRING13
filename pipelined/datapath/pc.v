@@ -8,7 +8,8 @@ output reg [W-1:0] out); // the content of this register is an address
 
 	always @(posedge clk) begin
 		if (clr) out = 0;
-		else out <= (PCSrc) ? branch+(out+1) : out+1; //iterate though instructions in instruction register (ism.v)
+		else out <= (PCSrc) ? branch+(out+1) : out+1; 
+		//this is not correct -- need to pipeline branch signal twice
 	end
 
 endmodule
