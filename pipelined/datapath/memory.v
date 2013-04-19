@@ -7,19 +7,12 @@ input [dataWidth-1:0] in, //input data
 output [dataWidth-1:0] out //output insturction or generic data
 ); 
 
+
 //add test program to instuction memory
 //this would be done by compiler tool chain (loader)
-`ifdef PROGRAM_1
-	initial $readmemb("sw_program", RAM);
-`endif
-`ifdef HMWK5
-	initial begin
-	$display("loading program for HMWK 5");
-/*	$readmemb("datapath/mem.mem", RAM);*/
-	$readmemh("datapath/memfile.dat", RAM);
-	end
-`endif
-
+	`ifdef pipelined_program
+		initial $readmemh("datapath/pipelined_program", RAM);
+	`endif
 
 
 //this should be a 32 (column) x 64 (row) memory array 1024 B = 1 KB
@@ -30,7 +23,7 @@ output [dataWidth-1:0] out //output insturction or generic data
 
 	reg [dataWidth-1:0] RAM [2**addWidth-1:0]; //this is the actual program instructions
 
-	assign out = RAM[addr]; //async read
+	assign out = 6'b00001;//RAM[addr]; //async read
 
 	always@(posedge clk) begin
 		if(we) RAM[addr] <= in; //this should select a row and write di to it

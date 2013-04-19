@@ -11,9 +11,9 @@
 module DataPath(
 input clk, reset,
 input MemToReg, RegDstE, 
-input [1:0] PCSrc, 
-input ALUSrcA, IRWrite, MemWrite, PCWrite, Branch, RegWriteW,
-input [1:0] ALUSrcE, 
+input PCSrc, 
+input ALUSrcA, MemWrite, PCWrite, Branch, RegWriteW,
+input  ALUSrcE, 
 input [2:0] ALUControlE,
 output [5:0] Opcode, Funct //send to controller
 );
@@ -23,6 +23,13 @@ parameter addWidth = 6, dataWidth=32;
 //pc
 wire PCEn;
 wire [addWidth-1:0] Adr;
+wire [addWidth-1:0] PCF;
+wire [addWidth-1:0] pc_mux_out;
+wire [addWidth-1:0] PCPlus1F;
+wire [addWidth-1:0] PCPlus1D;
+wire [addWidth-1:0] PCPlus1E;
+wire [addWidth-1:0] PCBranchM;
+wire [addWidth-1:0] _PCBranchM; //temp var
 
 //memory
 wire [dataWidth-1:0] mem_out;
@@ -47,8 +54,10 @@ wire [dataWidth-1:0] RD2;
 wire [dataWidth-1:0] SrcAE;
 wire [dataWidth-1:0] B;
 wire [dataWidth-1:0] ResultW;
-wire [addData-1:0] WriteRegM;
-wire [addData-1:0] WriteRegW;
+wire [addWidth-1:0] WriteRegE;
+wire [addWidth-1:0] WriteRegM;
+wire [addWidth-1:0] WriteRegW;
+
 
 //alu
 wire [dataWidth-1:0] ALUOutM; // after reg
@@ -61,15 +70,18 @@ wire [dataWidth-1:0] SignImm;
 wire [dataWidth-1:0] SignImmE;
 
 //PC -- the width of these should be addWidth
-ProgramCounter #(PCW) pc (clk, pc_clr, PCSrc, SignImmE, pc_out); //PCSrc is from controller
+MUX21 #(addWidth) pc_mux (PCPlus1F, PCBranchM, PCSrcM, pc_mux_out);
+DFF #(addWidth) pc_reg (clk, reset, 1, pc_mux_out, PCF);
+assign PCPlus1F = PCF + 1;
+
 
 //Mem
-Memory #(addWidth, dataWidth) mem (clk, 0, pc_out, 1'bx, mem_out);
+Memory #(addWidth, dataWidth) instruction_mem (clk, 0, PCF, 1'bx, mem_out);
 
-//fetch reg
-DFF #(dataWidth) decode_reg (clk, 0, 1, mem_out, InstrD);
+//DECODE REGION
+DFF #(dataWidth) decode_reg_ins (clk, 0, 1, mem_out, InstrD);
+DFF #(addWidth)  decode_reg_pc  (clk, 0, 1, PCPlus1F, PCPlus1D);
 
-//DECODE REGION 
 //Decoder
 Decoder decoder (InstrD, Opcode, A1, A2, A3, Immediate, Jump, Funct);
 
@@ -79,7 +91,7 @@ DFF #(dataWidth) execute_reg_rd1 (clk, 0, 1, RD1, SrcAE);
 DFF #(dataWidth) execute_reg_rd2 (clk, 0, 1, RD2, B);
 DFF #(dataWidth) execute_reg_rte (clk, 0, 1, A2, RtE);
 DFF #(dataWidth) execute_reg_rde (clk, 0, 1, A3, RdE);
-
+DFF #(dataWidth) execute_reg_PC (clk, 0, 1, PCPlus1D, PCPlus1E);
 //SEX
 SignExtender sext(Immediate, SignImm);
 DFF #(dataWidth) execute_reg_sex (clk, 0, 1, SignImm, SignImmE);
@@ -90,12 +102,15 @@ DFF #(dataWidth) execute_reg_sex (clk, 0, 1, SignImm, SignImmE);
 MUX21 #(addWidth-1) a3_mux (RtE, RdE, RegDstE, WriteRegE);
 MUX21 #(dataWidth) srcB_mux (B, SignImmE, ALUSrcE, SrcBE) ; 
 ALU alu (ALUControlE, SrcAE, SrcBE, ALUResult, alu_zero);
+//Branch adder
+assign _PCBranchM=SignImmE + PCPlus1E; //pass this to reg below
 
 //MEMWRITE REGION
 DFF #(dataWidth) mem_reg_zero (clk, 0, 1, alu_zero, ZeroM);
 DFF #(dataWidth) mem_reg_alu (clk, 0, 1, ALUResult, ALUOutM);
 DFF #(dataWidth) mem_reg_write_data (clk, 0, 1, B, WriteDataM);
 DFF #(dataWidth) mem_reg_write_reg (clk, 0, 1, WriteRegE, WriteRegM);
+DFF #(addWidth) mem_reg_pc (clk, 0, 1, _PCBranchM, PCBranchM);
 
 //memory
 Memory #(addWidth, dataWidth) mem (clk, MemWriteM, ALUOutM, WriteDataM, mem_out);
@@ -108,7 +123,7 @@ DFF #(dataWidth) write_reg_writeregW (clk, 0, 1, WriteRegM, WriteRegW);
 MUX21 #(dataWidth) mem_out_mux (ALUOutW, ReadDataW, MemToRegW, ResultW) ; 
 
 
-assign PCEn = alu_zero & Branch; // goes to pc
+/*assign PCEn = alu_zero & Branch; // goes to pc*/
 
 
 
