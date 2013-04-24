@@ -14,13 +14,13 @@ module Controller_tb();
 
   initial begin
 	clk=0;
-	op=6'b100011; //lw
+	zero=0;
 	funct=0;
 	
-	@(posedge clk);
-	@(posedge clk);
-	@(posedge clk);
-	@(posedge clk);
+	@(posedge clk);	op=6'b100011; //lw
+	@(posedge clk);	op=6'b101011; //sw
+	@(posedge clk); op=6'b000000; funct=6'b100000; //rtype
+	@(posedge clk);	op=6'b000100; zero=1;//beq
 	@(posedge clk);
 	@(posedge clk);
 	@(posedge clk);
