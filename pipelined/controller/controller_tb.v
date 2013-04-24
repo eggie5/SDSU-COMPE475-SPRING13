@@ -10,7 +10,7 @@ module Controller_tb();
  wire MemWriteM, PCSrcM, ALUSrcE, RegDstE, RegWrite, jump;
  wire [2:0] ALUControlE;
 
- Controller controller (clk, op, funct, zero, MemToReg, MemWriteM, PCSrcM, ALUSrcE, RegDstE, RegWriteXXX, jump, ALUControlE);
+ Controller controller (clk, op, funct, zero, MemToReg, MemWriteM, PCSrcM, ALUSrcE, RegDstE, RegWrite, jump, ALUControlE);
 
   initial begin
 	clk=0;
