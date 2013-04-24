@@ -85,3 +85,5 @@ FSM/mealy_tb
 FSM/moore_tb
 
 mips/processor
+
+temp/*
