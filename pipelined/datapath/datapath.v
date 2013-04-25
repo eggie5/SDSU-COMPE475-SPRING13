@@ -64,6 +64,7 @@ wire [addWidth-1:0] WriteRegW;
 //alu
 wire [dataWidth-1:0] ALUResult; // after reg
 wire [dataWidth-1:0] ALUOutM; // after reg
+wire [dataWidth-1:0] ALUOutW; // after reg
 wire [dataWidth-1:0] SrcBE;
 wire alu_zero;
 wire ZeroM;

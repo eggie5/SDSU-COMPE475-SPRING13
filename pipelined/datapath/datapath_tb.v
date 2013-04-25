@@ -21,10 +21,10 @@ initial begin
 
 	clk=0;
 	reset=1;
-	MemToReg=1; 
+	MemToReg=0; 
 	RegDstE=0; 
 	PCSrc=0;
-	ALUSrcA=1;
+	ALUSrcA=0;
 	MemWrite=0;
 	PCWrite=0; 
 	Branch=0;
