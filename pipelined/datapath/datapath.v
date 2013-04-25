@@ -120,7 +120,7 @@ DFF #(dataWidth) write_reg_memout (clk, 0, 1'b1, mem_out, ReadDataW);
 DFF #(dataWidth) write_reg_aluout (clk, 0, 1'b1, ALUOutM, ALUOutW);
 DFF #(dataWidth) write_reg_writeregW (clk, 0, 1'b1, WriteRegM, WriteRegW);
 
-MUX21 #(dataWidth) mem_out_mux (ALUOutW, ReadDataW, MemToRegW, ResultW) ; 
+MUX21 #(dataWidth) mem_out_mux (ALUOutW, ReadDataW, MemToReg, ResultW); 
 
 
 /*assign PCEn = alu_zero & Branch; // goes to pc*/
