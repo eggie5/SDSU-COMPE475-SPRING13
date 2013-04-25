@@ -12,7 +12,7 @@ always @ (A or B or C or sel)
 	0 : out = A; 
 	1 : out = B; 
 	2 : out = C; 
-	default : $display("Error in SEL: %b", sel); 
+	default : $display("(MUX31) Error in SEL: %b", sel); 
 endcase
 
 endmodule

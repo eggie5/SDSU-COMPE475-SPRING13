@@ -2,8 +2,6 @@
 `include "datapath/dff.v"
 `include "datapath/decoder.v"
 `include "datapath/mux21.v"
-`include "datapath/mux31.v"
-`include "datapath/mux41.v"
 `include "datapath/memory.v"
 `include "datapath/imem.v"
 `include "datapath/reg.v"
@@ -13,8 +11,8 @@ module DataPath(
 input clk, reset,
 input MemToReg, RegDstE, 
 input PCSrc, 
-input ALUSrcA, MemWrite, PCWrite, Branch, RegWriteW,
-input  ALUSrcE, 
+input ALUSrcB, MemWrite, PCWrite, Branch, RegWriteW,
+input  j, 
 input [2:0] ALUControlE,
 output [5:0] Opcode, Funct //send to controller
 );
@@ -61,6 +59,7 @@ wire [addWidth-1:0] WriteRegW;
 
 
 //alu
+wire [dataWidth-1:0] ALUResult; // after reg
 wire [dataWidth-1:0] ALUOutM; // after reg
 wire [dataWidth-1:0] SrcBE;
 wire alu_zero;
@@ -101,7 +100,7 @@ DFF #(dataWidth) execute_reg_sex (clk, 0, 1'b1, SignImm, SignImmE);
 //EXECUTE REGION
 //ALU
 MUX21 #(addWidth-1) a3_mux (RtE, RdE, RegDstE, WriteRegE);
-MUX21 #(dataWidth) srcB_mux (B, SignImmE, ALUSrcE, SrcBE) ; 
+MUX21 #(dataWidth) srcB_mux (B, SignImmE, ALUSrcB, SrcBE) ; 
 ALU alu (ALUControlE, SrcAE, SrcBE, ALUResult, alu_zero);
 //Branch adder
 assign _PCBranchM=SignImmE + PCPlus1E; //pass this to reg below
@@ -114,7 +113,7 @@ DFF #(dataWidth) mem_reg_write_reg (clk, 0, 1'b1, WriteRegE, WriteRegM);
 DFF #(addWidth) mem_reg_pc (clk, 0, 1'b1, _PCBranchM, PCBranchM);
 
 //memory
-Memory #(addWidth, dataWidth) mem (clk, MemWriteM, ALUOutM, WriteDataM, mem_out);
+Memory #(addWidth, dataWidth) mem (clk, MemWrite, ALUOutM, WriteDataM, mem_out);
 
 //WRITEBACK REGION
 DFF #(dataWidth) write_reg_memout (clk, 0, 1'b1, mem_out, ReadDataW);
