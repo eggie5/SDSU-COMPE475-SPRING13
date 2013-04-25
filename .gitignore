@@ -86,4 +86,4 @@ FSM/moore_tb
 
 mips/processor
 
-temp/*
+pipeline/tmp
