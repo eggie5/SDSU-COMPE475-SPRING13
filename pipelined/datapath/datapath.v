@@ -5,6 +5,7 @@
 `include "datapath/mux31.v"
 `include "datapath/mux41.v"
 `include "datapath/memory.v"
+`include "datapath/imem.v"
 `include "datapath/reg.v"
 `include "datapath/sign_ext.v"
 
@@ -70,31 +71,31 @@ wire [dataWidth-1:0] SignImm;
 wire [dataWidth-1:0] SignImmE;
 
 //PC -- the width of these should be addWidth
-MUX21 #(addWidth) pc_mux (PCPlus1F, PCBranchM, PCSrcM, pc_mux_out);
-DFF #(addWidth) pc_reg (clk, reset, 1, pc_mux_out, PCF);
+MUX21 #(addWidth) pc_mux (PCPlus1F, PCBranchM, PCSrc, pc_mux_out);
+DFF #(addWidth) pc_reg (clk, reset, 1'b1, pc_mux_out, PCF);
 assign PCPlus1F = PCF + 1;
 
 
 //Mem
-Memory #(addWidth, dataWidth) instruction_mem (clk, 0, PCF, 1'bx, mem_out);
+IMemory #(addWidth, dataWidth) instruction_mem (PCF, instruction);
 
 //DECODE REGION
-DFF #(dataWidth) decode_reg_ins (clk, 0, 1, mem_out, InstrD);
-DFF #(addWidth)  decode_reg_pc  (clk, 0, 1, PCPlus1F, PCPlus1D);
+DFF #(dataWidth) decode_reg_ins (clk, 0, 1'b1, instruction, InstrD);
+DFF #(addWidth)  decode_reg_pc  (clk, 0, 1'b1, PCPlus1F, PCPlus1D);
 
 //Decoder
 Decoder decoder (InstrD, Opcode, A1, A2, A3, Immediate, Jump, Funct);
 
 //Register File
 Register #(addWidth-1, dataWidth) reg_file (clk, RegWriteW, A1, A2, WriteRegW, ResultW, RD1, RD2);
-DFF #(dataWidth) execute_reg_rd1 (clk, 0, 1, RD1, SrcAE);
-DFF #(dataWidth) execute_reg_rd2 (clk, 0, 1, RD2, B);
-DFF #(dataWidth) execute_reg_rte (clk, 0, 1, A2, RtE);
-DFF #(dataWidth) execute_reg_rde (clk, 0, 1, A3, RdE);
-DFF #(dataWidth) execute_reg_PC (clk, 0, 1, PCPlus1D, PCPlus1E);
+DFF #(dataWidth) execute_reg_rd1 (clk, 0, 1'b1, RD1, SrcAE);
+DFF #(dataWidth) execute_reg_rd2 (clk, 0, 1'b1, RD2, B);
+DFF #(dataWidth) execute_reg_rte (clk, 0, 1'b1, A2, RtE);
+DFF #(dataWidth) execute_reg_rde (clk, 0, 1'b1, A3, RdE);
+DFF #(dataWidth) execute_reg_PC (clk, 0, 1'b1, PCPlus1D, PCPlus1E);
 //SEX
 SignExtender sext(Immediate, SignImm);
-DFF #(dataWidth) execute_reg_sex (clk, 0, 1, SignImm, SignImmE);
+DFF #(dataWidth) execute_reg_sex (clk, 0, 1'b1, SignImm, SignImmE);
 
 
 //EXECUTE REGION
@@ -106,19 +107,19 @@ ALU alu (ALUControlE, SrcAE, SrcBE, ALUResult, alu_zero);
 assign _PCBranchM=SignImmE + PCPlus1E; //pass this to reg below
 
 //MEMWRITE REGION
-DFF #(dataWidth) mem_reg_zero (clk, 0, 1, alu_zero, ZeroM);
-DFF #(dataWidth) mem_reg_alu (clk, 0, 1, ALUResult, ALUOutM);
-DFF #(dataWidth) mem_reg_write_data (clk, 0, 1, B, WriteDataM);
-DFF #(dataWidth) mem_reg_write_reg (clk, 0, 1, WriteRegE, WriteRegM);
-DFF #(addWidth) mem_reg_pc (clk, 0, 1, _PCBranchM, PCBranchM);
+DFF #(dataWidth) mem_reg_zero (clk, 0, 1'b1, alu_zero, ZeroM);
+DFF #(dataWidth) mem_reg_alu (clk, 0, 1'b1, ALUResult, ALUOutM);
+DFF #(dataWidth) mem_reg_write_data (clk, 0, 1'b1, B, WriteDataM);
+DFF #(dataWidth) mem_reg_write_reg (clk, 0, 1'b1, WriteRegE, WriteRegM);
+DFF #(addWidth) mem_reg_pc (clk, 0, 1'b1, _PCBranchM, PCBranchM);
 
 //memory
 Memory #(addWidth, dataWidth) mem (clk, MemWriteM, ALUOutM, WriteDataM, mem_out);
 
 //WRITEBACK REGION
-DFF #(dataWidth) write_reg_memout (clk, 0, 1, mem_out, ReadDataW);
-DFF #(dataWidth) write_reg_aluout (clk, 0, 1, ALUOutM, ALUOutW);
-DFF #(dataWidth) write_reg_writeregW (clk, 0, 1, WriteRegM, WriteRegW);
+DFF #(dataWidth) write_reg_memout (clk, 0, 1'b1, mem_out, ReadDataW);
+DFF #(dataWidth) write_reg_aluout (clk, 0, 1'b1, ALUOutM, ALUOutW);
+DFF #(dataWidth) write_reg_writeregW (clk, 0, 1'b1, WriteRegM, WriteRegW);
 
 MUX21 #(dataWidth) mem_out_mux (ALUOutW, ReadDataW, MemToRegW, ResultW) ; 
 
