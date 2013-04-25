@@ -32,6 +32,7 @@ wire [addWidth-1:0] _PCBranchM; //temp var
 
 //memory
 wire [dataWidth-1:0] mem_out;
+wire [dataWidth-1:0] ReadDataW;
 wire [dataWidth-1:0] instruction;
 wire [dataWidth-1:0] InstrD;
 wire [dataWidth-1:0] Data;
@@ -42,6 +43,8 @@ wire [dataWidth-1:0] WriteDataM;
 wire [5:0] Opcode;
 wire [addWidth-2:0] A1;
 wire [addWidth-2:0] A2;
+wire [addWidth-2:0] RdE;
+wire [addWidth-2:0] RtE;
 wire [addWidth-2:0] A3;
 wire [15:0] Immediate;
 wire [25:0] Jump;

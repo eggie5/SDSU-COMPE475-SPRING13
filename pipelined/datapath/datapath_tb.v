@@ -67,3 +67,5 @@ initial begin
 always #10 clk=~clk;
 
 endmodule
+
+//iverilog -o tmp/datapath_tb -Ddp_test_program datapath/datapath_tb.v && ./tmp/datapath_tb

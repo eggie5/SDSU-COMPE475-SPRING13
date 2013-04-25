@@ -11,7 +11,7 @@ output [dataWidth-1:0] out //output insturction or generic data
 //add test program to instuction memory
 //this would be done by compiler tool chain (loader)
 
-		initial $readmemh("datapath/dmem.mem", RAM);
+		initial $readmemb("datapath/dmem.mem", RAM);
 
 	
 
