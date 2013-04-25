@@ -14,7 +14,7 @@ parameter addWidth = 6, dataWidth=32;
 integer fp;
 integer i;
 
-DataPath dp (clk, reset, MemToReg, RegDstE, PCSrc, ALUSrcA, MemWrite, PCWrite, Branch, RegWrite, ALUSrcE,
+DataPath dp (clk, reset, MemToReg, RegDstE, PCSrc, ALUSrcA, MemWrite, PCWrite, RegWrite,
 	ALUControlE, Opcode, Funct);
 
 initial begin
@@ -22,15 +22,14 @@ initial begin
 	clk=0;
 	reset=1;
 	MemToReg=0; 
-	RegDstE=0; 
-	PCSrc=0;
+	RegDstE=1; 
+	PCSrc=1;
 	ALUSrcA=0;
 	MemWrite=0;
 	PCWrite=0; 
-	Branch=0;
 	RegWrite=1;
 	ALUSrcE=0;
-	ALUControlE=3'b010;
+	ALUControlE=3'b110;
 
 	@(posedge clk); reset=0;
 	@(posedge clk); 

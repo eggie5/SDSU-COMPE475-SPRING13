@@ -11,8 +11,7 @@ module DataPath(
 input clk, reset,
 input MemToReg, RegDstE, 
 input PCSrc, 
-input ALUSrcB, MemWrite, PCWrite, Branch, RegWriteW,
-input  j, 
+input ALUSrcB, MemWrite, PCWrite, RegWriteW,
 input [2:0] ALUControlE,
 output [5:0] Opcode, Funct //send to controller
 );
@@ -126,8 +125,6 @@ DFF #(dataWidth) write_reg_writeregW (clk, 0, 1'b1, WriteRegM, WriteRegW);
 
 MUX21 #(dataWidth) mem_out_mux (ALUOutW, ReadDataW, MemToReg, ResultW); 
 
-
-/*assign PCEn = alu_zero & Branch; // goes to pc*/
 
 
 
