@@ -11,9 +11,10 @@ module DataPath(
 input clk, reset,
 input MemToReg, RegDstE, 
 input PCSrc, 
-input ALUSrcB, MemWrite, PCWrite, RegWriteW,
+input ALUSrcB, MemWrite, RegWriteW,
 input [2:0] ALUControlE,
-output [5:0] Opcode, Funct //send to controller
+output [5:0] Opcode, Funct,
+output zero //send to controller
 );
 
 parameter addWidth = 6, dataWidth=32;
