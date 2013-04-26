@@ -15,9 +15,9 @@ initial begin
 
 	//set any initial values
 	clk=0;
- 	reset=1;
+ 	
+	@(posedge clk) reset=1;
 	@(posedge clk) reset=0;
-	@(posedge clk)
 	@(posedge clk) 
 	@(posedge clk)
 	@(posedge clk)
@@ -34,7 +34,7 @@ initial begin
 
 	fp = $fopen("tmp/mem_after.dump"); 
 	for (i = 0; i <= 63; i = i + 1) 
-		$fdisplayh(fp, processor.dp.mem.RAM[i]); 
+		$fdisplayb(fp, processor.dp.mem.RAM[i]); 
 	$fclose(fp);
 	
 	fp = $fopen("tmp/reg_after.dump"); 

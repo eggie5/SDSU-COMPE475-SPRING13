@@ -2,6 +2,7 @@
 `include "datapath/dff.v"
 `include "datapath/decoder.v"
 `include "datapath/mux21.v"
+`include "datapath/pcmux.v"
 `include "datapath/memory.v"
 `include "datapath/imem.v"
 `include "datapath/reg.v"
@@ -14,7 +15,7 @@ input PCSrc,
 input ALUSrcB, MemWrite, RegWriteW,
 input [2:0] ALUControlE,
 output [5:0] Opcode, Funct,
-output zero //send to controller
+output ZeroM //send to controller
 );
 
 parameter addWidth = 6, dataWidth=32;
@@ -67,16 +68,21 @@ wire [dataWidth-1:0] ALUOutM; // after reg
 wire [dataWidth-1:0] ALUOutW; // after reg
 wire [dataWidth-1:0] SrcBE;
 wire alu_zero;
-wire ZeroM;
 
 //sign extender
 wire [dataWidth-1:0] SignImm;
 wire [dataWidth-1:0] SignImmE;
 
 //PC -- the width of these should be addWidth
-MUX21 #(addWidth) pc_mux (PCPlus1F, PCBranchM, PCSrc, pc_mux_out);
 DFF #(addWidth) pc_reg (clk, reset, 1'b1, pc_mux_out, PCF);
 assign PCPlus1F = PCF + 1;
+
+PCMUX #(addWidth) pc_mux (PCPlus1F, PCBranchM, PCSrc, pc_mux_out);
+
+
+always @(posedge clk) begin
+$display("PCSrc=%b", PCSrc);
+end
 
 
 //Mem

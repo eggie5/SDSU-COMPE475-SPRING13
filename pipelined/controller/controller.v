@@ -20,6 +20,7 @@ module Controller
   
   assign PCSrcM = BranchM & zero;
 
+
   //delay all the outputs from maindec below
   wire MemtoRegE, MemtoRegM, MemtoRegW;
   wire RegWriteE, RegWriteM, RegWriteW;

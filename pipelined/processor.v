@@ -19,6 +19,6 @@ DataPath dp (clk, reset, MemToReg, RegDst, PCSrc, ALUSrcA, MemWrite, RegWrite, A
 	Opcode, Funct, zero //outputs
 	);
 
-   	         
+   	 
 
 endmodule
