@@ -7,8 +7,8 @@ input [addWidth-1:0] A1,
 input [addWidth-1:0] A2,
 input [addWidth-1:0] A3,
 input [dataWidth-1:0] WD3,
-output  [dataWidth-1:0] RD1,
-output  [dataWidth-1:0] RD2
+output [dataWidth-1:0] RD1,
+output [dataWidth-1:0] RD2
 );
 
 // THIS HAS TO BE WRITE FIRST
@@ -27,7 +27,7 @@ initial $readmemb("datapath/reg.mem", registers);
 		//3 diff ways of doing write first in 470 lectures
 		//report due on the 8th of may
 		//
-		assign RD1 = registers[A1]; //A
+/*		assign RD1 = registers[A1]; //A
 		assign RD2 = registers[A2]; //B
 
 	// synchronous writes; handles $zero register
@@ -35,6 +35,16 @@ initial $readmemb("datapath/reg.mem", registers);
 		if(we3)
 			registers[A3] <= WD3;
 	end
+*/
+//new
+
+assign RD1 = ((A1==A3) ? WD3 : registers[A1]);
+assign RD2 = ((A2==A3) ? WD3 : registers[A2]); 
+
+
+always @(posedge clk) begin
+	if(we3) registers[A3] <= WD3; //actual write
+end
 
 
 

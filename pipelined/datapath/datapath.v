@@ -6,6 +6,7 @@
 `include "datapath/memory.v"
 `include "datapath/imem.v"
 `include "datapath/reg.v"
+`include "datapath/reg2.v"
 `include "datapath/sign_ext.v"
 
 module DataPath(
@@ -79,12 +80,6 @@ assign PCPlus1F = PCF + 1;
 
 PCMUX #(addWidth) pc_mux (PCPlus1F, PCBranchM, PCSrc, pc_mux_out);
 
-
-always @(posedge clk) begin
-$display("PCSrc=%b", PCSrc);
-end
-
-
 //Mem
 IMemory #(addWidth, dataWidth) instruction_mem (PCF, instruction);
 
@@ -96,7 +91,8 @@ DFF #(addWidth)  decode_reg_pc  (clk, 0, 1'b1, PCPlus1F, PCPlus1D);
 Decoder decoder (InstrD, Opcode, A1, A2, A3, Immediate, Jump, Funct);
 
 //Register File
-Register #(addWidth-1, dataWidth) reg_file (clk, RegWriteW, A1, A2, WriteRegW, ResultW, RD1, RD2);
+/*Register #(addWidth-1, dataWidth) reg_file (clk, RegWriteW, A1, A2, WriteRegW, ResultW, RD1, RD2);*/
+reg_file #(addWidth-1, dataWidth) reg_file (RD1, RD2, A1, A2, WriteRegW, ResultW, clk, RegWriteW); //why -1 on the param? too short?
 DFF #(dataWidth) execute_reg_rd1 (clk, 0, 1'b1, RD1, SrcAE);
 DFF #(dataWidth) execute_reg_rd2 (clk, 0, 1'b1, RD2, B);
 DFF #(dataWidth) execute_reg_rte (clk, 0, 1'b1, A2, RtE);
