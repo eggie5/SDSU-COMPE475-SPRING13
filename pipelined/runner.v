@@ -37,6 +37,18 @@ initial begin
 	@(posedge clk)
 	@(posedge clk)
 	@(posedge clk)
+	@(posedge clk)
+	@(posedge clk) 
+	@(posedge clk)
+	@(posedge clk)
+	@(posedge clk)
+	@(posedge clk)
+	@(posedge clk)
+	@(posedge clk) 
+	@(posedge clk)
+	@(posedge clk)
+	@(posedge clk)
+	@(posedge clk)
 
 	fp = $fopen("tmp/mem_after.dump"); 
 	for (i = 0; i <= 63; i = i + 1) 

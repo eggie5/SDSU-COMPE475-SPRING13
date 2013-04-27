@@ -17,7 +17,12 @@
 000000_00111_00010_00111_00000_100000 //add $7, $7, $2 
 000000_00100_00010_00100_00000_101010 //slt $4, $4, $2
 001000_01000_01000_0000000000000001 //addi $8, $8, 1
-000000_00111_00010_00111_00000_100010 //sub  $7, $7, $2 //there's another structiral haz here - prev add $7 instruciton is writing this clock cycle and this sub is reading from $7
-//j    for
-
+000000_00111_00010_00111_00000_100010 //sub  $7, $7, $2 //there's another structiral haz here - pr
+000010_00000000000000000000000110//j    for
+/*addi $7, $7, 17
+      sw   $2, 0($0)
+      sw   $3, 1($0)
+      sw   $4, 2($0)
+      sw   $7, 3($0)
+      sw   $8, 4($0)*/
 

@@ -15,7 +15,7 @@ Controller controller (clk, Opcode, Funct, zero, //end of inputs
 	);
 
 //datapath
-DataPath dp (clk, reset, MemToReg, RegDst, PCSrc, ALUSrcA, MemWrite, RegWrite, ALUControl, 
+DataPath dp (clk, reset, MemToReg, RegDst, PCSrc, ALUSrcA, MemWrite, RegWrite, Jump, ALUControl, 
 	Opcode, Funct, zero //outputs
 	);
 

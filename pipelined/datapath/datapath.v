@@ -13,7 +13,7 @@ module DataPath(
 input clk, reset,
 input MemToReg, RegDstE, 
 input PCSrc, 
-input ALUSrcB, MemWrite, RegWriteW,
+input ALUSrcB, MemWrite, RegWriteW, JumpC,
 input [2:0] ALUControlE,
 output [5:0] Opcode, Funct,
 output ZeroM //send to controller
@@ -26,6 +26,7 @@ wire PCEn;
 wire [addWidth-1:0] Adr;
 wire [addWidth-1:0] PCF;
 wire [addWidth-1:0] pc_mux_out;
+wire[addWidth-1:0] jump_mux_out;
 wire [addWidth-1:0] PCPlus1F;
 wire [addWidth-1:0] PCPlus1D;
 wire [addWidth-1:0] PCPlus1E;
@@ -75,10 +76,11 @@ wire [dataWidth-1:0] SignImm;
 wire [dataWidth-1:0] SignImmE;
 
 //PC -- the width of these should be addWidth
-DFF #(addWidth) pc_reg (clk, reset, 1'b1, pc_mux_out, PCF);
+DFF #(addWidth) pc_reg (clk, reset, 1'b1, jump_mux_out, PCF);
 assign PCPlus1F = PCF + 1;
 
 PCMUX #(addWidth) pc_mux (PCPlus1F, PCBranchM, PCSrc, pc_mux_out);
+PCMUX #(dataWidth) jump_mux (pc_mux_out, {PCPlus1F[31:26], Jump}, JumpC, jump_mux_out);
 
 //Mem
 IMemory #(addWidth, dataWidth) instruction_mem (PCF, instruction);
