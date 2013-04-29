@@ -18,7 +18,7 @@ module Controller
   maindec md (op, memtoreg, memwrite, branch, alusrc, regdst, regwrite, jump, aluop);
   aludec ad (funct, aluop, alucontrol);
   
-  assign PCSrcM = BranchM & zero;
+  assign PCSrcM = branch & zero; //no delay/piping
 
 
   //delay all the outputs from maindec below
