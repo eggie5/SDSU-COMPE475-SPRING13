@@ -1,0 +1,5 @@
+4/28/13 10:15 PM
+
+Found out I have a control hazard after the BEQ. need to flush 2 cycles if branch is taken. 
+
+Need to fex the control hazard by flushing

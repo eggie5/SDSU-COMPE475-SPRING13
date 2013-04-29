@@ -99,7 +99,7 @@ DFF #(dataWidth) execute_reg_rd1 (clk, 0, 1'b1, RD1, SrcAE);
 DFF #(dataWidth) execute_reg_rd2 (clk, 0, 1'b1, RD2, B);
 DFF #(dataWidth) execute_reg_rte (clk, 0, 1'b1, A2, RtE);
 DFF #(dataWidth) execute_reg_rde (clk, 0, 1'b1, A3, RdE);
-DFF #(dataWidth) execute_reg_PC (clk, 0, 1'b1, PCPlus1D, PCPlus1E);
+DFF #(dataWidth) execute_reg_PC (clk,  0, 1'b1, PCPlus1D, PCPlus1E);
 //SEX
 SignExtender sext(Immediate, SignImm);
 DFF #(dataWidth) execute_reg_sex (clk, 0, 1'b1, SignImm, SignImmE);
