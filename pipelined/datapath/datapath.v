@@ -88,7 +88,8 @@ PCMUX #(dataWidth) jump_mux (pc_mux_out, {PCPlus1F[31:26], Jump}, JumpC, jump_mu
 IMemory #(addWidth, dataWidth) instruction_mem (PCF, instruction);
 
 
-
+//Decoder
+Decoder decoder (instruction, Opcode, A1, A2, A3, Immediate, Jump, Funct);
 
 
 //DECODE REGION
@@ -96,8 +97,6 @@ DFF #(dataWidth) decode_reg_ins (clk, 0, 1'b1, instruction, InstrD);
 DFF #(addWidth)  decode_reg_pc  (clk, 0, 1'b1, PCPlus1F, PCPlus1D);
 
 
-//Decoder
-Decoder decoder (InstrD, Opcode, A1, A2, A3, Immediate, Jump, Funct);
 
 //Register File
 /*Register #(addWidth-1, dataWidth) reg_file (clk, RegWriteW, A1, A2, WriteRegW, ResultW, RD1, RD2);*/
