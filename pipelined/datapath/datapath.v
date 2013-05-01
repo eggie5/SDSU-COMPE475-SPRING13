@@ -27,7 +27,7 @@ wire PCEn;
 wire [addWidth-1:0] Adr;
 wire [addWidth-1:0] PCF;
 wire [addWidth-1:0] pc_mux_out;
-wire [addWidth-1:0] jump_mux_out;
+wire[addWidth-1:0] jump_mux_out;
 wire [addWidth-1:0] PCPlus1F;
 wire [addWidth-1:0] PCPlus1D;
 wire [addWidth-1:0] PCPlus1E;
