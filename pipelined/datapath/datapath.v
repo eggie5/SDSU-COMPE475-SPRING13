@@ -1,5 +1,6 @@
 `include "datapath/alu.v"
 `include "datapath/dff.v"
+`include "datapath/pcdff.v"
 `include "datapath/decoder.v"
 `include "datapath/mux21.v"
 `include "datapath/pcmux.v"
@@ -78,7 +79,7 @@ wire [dataWidth-1:0] SignImm;
 wire [dataWidth-1:0] SignImmE;
 
 //PC -- the width of these should be addWidth
-DFF #(addWidth) pc_reg (clk, reset, 1'b1, jump_mux_out, PCF);
+PCDFF #(addWidth) pc_reg (clk, reset, JumpC|PCSrc, 1'b1, jump_mux_out, PCF);
 assign PCPlus1F = PCF + 1;
 
 PCMUX #(addWidth) pc_mux (PCPlus1F, PCBranchD, PCSrc, pc_mux_out);
@@ -88,15 +89,12 @@ PCMUX #(dataWidth) jump_mux (pc_mux_out, {PCPlus1F[31:26], Jump}, JumpC, jump_mu
 IMemory #(addWidth, dataWidth) instruction_mem (PCF, instruction);
 
 
-//Decoder
-Decoder decoder (instruction, Opcode, A1, A2, A3, Immediate, Jump, Funct);
-
-
 //DECODE REGION
 DFF #(dataWidth) decode_reg_ins (clk, 0, 1'b1, instruction, InstrD);
-DFF #(addWidth)  decode_reg_pc  (clk, 0, 1'b1, PCPlus1F, PCPlus1D);
+DFF #(addWidth)  decode_reg_pc  (clk, 0, 1'b1, PCPlus1F, PCPlus1D); // i might need to reset this along w/ PCreg..
 
-
+//Decoder
+Decoder decoder (InstrD, Opcode, A1, A2, A3, Immediate, Jump, Funct);
 
 //Register File
 /*Register #(addWidth-1, dataWidth) reg_file (clk, RegWriteW, A1, A2, WriteRegW, ResultW, RD1, RD2);*/
@@ -115,7 +113,7 @@ compar #(addWidth-1) comp(RD1, RD2, branch_boolean);
 SignExtender sext(Immediate, SignImm);
 DFF #(dataWidth) execute_reg_sex (clk, 0, 1'b1, SignImm, SignImmE);
 //Branch adder
-assign PCBranchD=SignImm + PCPlus1F; //pass this to reg below
+assign PCBranchD=SignImm + PCPlus1D; //pass this to reg below
 
 
 
