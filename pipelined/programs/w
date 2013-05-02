@@ -1,0 +1,20 @@
+// main
+ac030028 //D[40] = $3 sw 101011_00000_00011_0000000000101000
+ac040029 //D[41] = $4 
+10220003 //beq $1, $2, done (does not take)
+20210001 // addi $1, $1, 1   $1=2
+0085202a // slt $4, $4, $5 ($4 = 1)
+01094020 // add 8,9 store 8 ($8 = 17)
+10220003 // beq $1, $2, done (does branch)
+014b5022 // sub ($10 - $11, store $10) (doesn't happen)
+014b5022 // sub ($10 - $11, store $10) (doesn't happen)
+014b5022 // sub ($10 - $11, store $10) (doesn't happen)
+//W:
+00002820 // (addI $0, 0, store $5)
+0800000f // j finish
+018dc02a // slt $12, $12, $13 (doesn't happen)
+018dc02a // slt $12, $12, $13 (doesn't happen)
+018dc02a // slt $12, $12, $13 (doesn't happen)
+//finish:
+8c030029 //lw $3, 40($0)  $3=2
+add toher intstrictions
