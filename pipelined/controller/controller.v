@@ -6,7 +6,8 @@ module Controller
  output MemtoRegW,
  output MemWriteM, 
  output PCSrcM, ALUSrcE, RegDstE, RegWriteW, jump,
- output [2:0] ALUControlE
+ output [2:0] ALUControlE,
+ output branch, RegWriteE, RegWriteM, MemtoRegE
 );
 
   wire [1:0] aluop;
