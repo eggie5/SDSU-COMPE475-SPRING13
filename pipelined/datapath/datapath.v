@@ -88,7 +88,7 @@ wire [dataWidth-1:0] SignImm;
 wire [dataWidth-1:0] SignImmE;
 
 //PC -- the width of these should be addWidth
-PCDFF #(addWidth) pc_reg (clk, reset, JumpC|PCSrc, StallF, jump_mux_out, PCF);
+PCDFF #(addWidth) pc_reg (clk, reset, JumpC|PCSrc, 1'b1, jump_mux_out, PCF);
 assign PCPlus1F = PCF + 1;
 
 PCMUX #(addWidth) pc_mux (PCPlus1F, PCBranchD, PCSrc, pc_mux_out);
@@ -99,8 +99,8 @@ IMemory #(addWidth, dataWidth) instruction_mem (PCF, instruction);
 
 
 //DECODE REGION
-DFF #(dataWidth) decode_reg_ins (clk, 0, StallD, instruction, InstrD);
-DFF #(addWidth)  decode_reg_pc  (clk, 0, StallD, PCPlus1F, PCPlus1D); // i might need to reset this along w/ PCreg..
+DFF #(dataWidth) decode_reg_ins (clk, 0, 1'b1, instruction, InstrD);
+DFF #(addWidth)  decode_reg_pc  (clk, 0, 1'b1, PCPlus1F, PCPlus1D); // i might need to reset this along w/ PCreg..
 
 //Decoder
 Decoder decoder (InstrD, Opcode, A1, A2, A3, Immediate, Jump, Funct);
@@ -108,11 +108,11 @@ Decoder decoder (InstrD, Opcode, A1, A2, A3, Immediate, Jump, Funct);
 //Register File
 /*Register #(addWidth-1, dataWidth) reg_file (clk, RegWriteW, A1, A2, WriteRegW, ResultW, RD1, RD2);*/
 reg_file #(addWidth-1, dataWidth) reg_file (RD1, RD2, A1, A2, WriteRegW, ResultW, clk, RegWriteW); //why -1 on the param? too short?
-DFF #(dataWidth) execute_reg_rd1 (clk, FlushE, 1'b1, RD1, SrcAE);
-DFF #(dataWidth) execute_reg_rd2 (clk, FlushE, 1'b1, RD2, B);
-DFF #(dataWidth) execute_reg_rse (clk, FlushE, 1'b1, A1, RsE);
-DFF #(dataWidth) execute_reg_rte (clk, FlushE, 1'b1, A2, RtE);
-DFF #(dataWidth) execute_reg_rde (clk, FlushE, 1'b1, A3, RdE);
+DFF #(dataWidth) execute_reg_rd1 (clk, 0, 1'b1, RD1, SrcAE);
+DFF #(dataWidth) execute_reg_rd2 (clk, 0, 1'b1, RD2, B);
+DFF #(dataWidth) execute_reg_rse (clk, 0, 1'b1, A1, RsE);
+DFF #(dataWidth) execute_reg_rte (clk, 0, 1'b1, A2, RtE);
+DFF #(dataWidth) execute_reg_rde (clk, 0, 1'b1, A3, RdE);
 /*DFF #(dataWidth) execute_reg_PC (clk,  0, 1'b1, PCPlus1D, PCPlus1E);*/
 
 //comparator for control hazards
@@ -123,7 +123,7 @@ compar #(addWidth-1) comp(compa_mux_out, compb_mux_out, branch_boolean);
 
 //SEX
 SignExtender sext(Immediate, SignImm);
-DFF #(dataWidth) execute_reg_sex (clk, FlushE, 1'b1, SignImm, SignImmE);
+DFF #(dataWidth) execute_reg_sex (clk, 0, 1'b1, SignImm, SignImmE);
 //Branch adder
 assign PCBranchD=SignImm + PCPlus1D; //pass this to reg below
 

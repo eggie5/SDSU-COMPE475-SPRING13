@@ -11,7 +11,7 @@ always @(jump) begin
 	if(jump) q = 32'bx;
 end
 
-always @(posedge clk, posedge reset) begin
+always @(posedge clk) begin
 	if (reset) q <= 0;
 	else if(en) q <= d;
 end

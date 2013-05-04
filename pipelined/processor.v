@@ -19,6 +19,10 @@ Controller controller (clk, Opcode, Funct, zero, //end of inputs
 	);
 
 //datapath
+wire [4:0] RS_D;
+wire [4:0] RT_D;
+wire [4:0] RS_EX;
+wire [4:0] RT_EX;
 DataPath dp (clk, reset, MemToReg, RegDst, PCSrc, ALUSrcA, MemWrite, RegWrite_W, Jump, ALUControl, 
 	StallF, StallD, FlushE, ForwardAD, ForwardBD, //new inputs for haz
 	ForwardAE, ForwardBE,
