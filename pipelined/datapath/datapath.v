@@ -101,8 +101,8 @@ IMemory #(addWidth, dataWidth) instruction_mem (PCF, instruction);
 
 
 //DECODE REGION
-DFF #(dataWidth) decode_reg_ins (clk, PCSrc, StallD, instruction, InstrD);
-DFF #(addWidth)  decode_reg_pc  (clk, PCSrc, StallD, PCPlus1F, PCPlus1D); // i might need to reset this along w/ PCreg..
+DFF #(dataWidth) decode_reg_ins (clk, PCSrc|JumpC, StallD, instruction, InstrD);
+DFF #(addWidth)  decode_reg_pc  (clk, PCSrc|JumpC, StallD, PCPlus1F, PCPlus1D); // i might need to reset this along w/ PCreg..
 
 //Decoder
 Decoder decoder (InstrD, Opcode, A1, A2, A3, Immediate, Jump, Funct);

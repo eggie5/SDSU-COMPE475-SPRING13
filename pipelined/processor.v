@@ -45,6 +45,7 @@ HazardUnit hu (
 	MemToReg_E,
 	MemToReg,
 	BranchD,
+	Jump,
 	ForwardAE,
 	ForwardBE,
 	ForwardAD, ForwardBD,

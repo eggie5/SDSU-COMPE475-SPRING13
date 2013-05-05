@@ -14,6 +14,7 @@ module HazardUnit
 	input MemToReg_E,
 	input MemToReg_M,
 	input BranchD,
+	input JumpD,
 	output reg [1:0] ForwardAE,
 	output reg [1:0] ForwardBE,
 	output reg ForwardAD, ForwardBD,
