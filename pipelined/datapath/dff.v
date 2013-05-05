@@ -6,9 +6,9 @@ module DFF #(parameter W = 32)
  output reg [W-1:0] q
 );
 
-always @(posedge clk, posedge reset) begin
-	if (reset) q <= 0;
-	else if(en) q <= d;
+always @(posedge clk) begin
+	if (reset===1'b1) q <= 32'bx;
+	else if(~en || en=== 1'bx) q <= d;
 end
 
 endmodule

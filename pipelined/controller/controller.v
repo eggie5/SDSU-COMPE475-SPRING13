@@ -31,25 +31,25 @@ module Controller
   wire RegDstE;
   wire [2:0] ALUControlE;
 
-  DFF #(1) memtoreg_D (clk, 0, 1'b1, memtoreg, MemtoRegE);
-  DFF #(1) memtoreg_E (clk, 0, 1'b1, MemtoRegE, MemtoRegM);
-  DFF #(1) memtoreg_M (clk, 0, 1'b1, MemtoRegM, MemtoRegW);
+  DFF #(1) memtoreg_D (clk, 0, 1'b0, memtoreg, MemtoRegE);
+  DFF #(1) memtoreg_E (clk, 0, 1'b0, MemtoRegE, MemtoRegM);
+  DFF #(1) memtoreg_M (clk, 0, 1'b0, MemtoRegM, MemtoRegW);
+                                  
+  DFF #(1) regwrite_D (clk, 0, 1'b0, regwrite, RegWriteE);
+  DFF #(1) regwrite_E (clk, 0, 1'b0, RegWriteE, RegWriteM);
+  DFF #(1) regwrite_M (clk, 0, 1'b0, RegWriteM, RegWriteW);
+                                  
+  DFF #(1) memwrite_D (clk, 0, 1'b0, memwrite, MemWriteE);
+  DFF #(1) memwrite_E (clk, 0, 1'b0, MemWriteE, MemWriteM);
 
-  DFF #(1) regwrite_D (clk, 0, 1'b1, regwrite, RegWriteE);
-  DFF #(1) regwrite_E (clk, 0, 1'b1, RegWriteE, RegWriteM);
-  DFF #(1) regwrite_M (clk, 0, 1'b1, RegWriteM, RegWriteW);
+  DFF #(1) branch_D (clk, 0, 1'b0, branch, BranchE);
+  DFF #(1) branch_E (clk, 0, 1'b0, BranchE, BranchM);
+                                
+  DFF #(1) alusrc_D (clk, 0, 1'b0, alusrc, ALUSrcE);
+                                
+  DFF #(1) regdst_D (clk, 0, 1'b0, regdst, RegDstE);
 
-  DFF #(1) memwrite_D (clk, 0, 1'b1, memwrite, MemWriteE);
-  DFF #(1) memwrite_E (clk, 0, 1'b1, MemWriteE, MemWriteM);
-
-  DFF #(1) branch_D (clk, 0, 1'b1, branch, BranchE);
-  DFF #(1) branch_E (clk, 0, 1'b1, BranchE, BranchM);
-
-  DFF #(1) alusrc_D (clk, 0, 1'b1, alusrc, ALUSrcE);
-
-  DFF #(1) regdst_D (clk, 0, 1'b1, regdst, RegDstE);
-
-  DFF #(3) alucontrol_D (clk, 0, 1'b1, alucontrol, ALUControlE);
+  DFF #(3) alucontrol_D (clk, 0, 1'b0, alucontrol, ALUControlE);
   //end delay code
 
 endmodule

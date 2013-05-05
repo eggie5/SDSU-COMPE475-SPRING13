@@ -17,7 +17,8 @@ initial begin
 	clk=0;
  	
 	@(posedge clk) reset=1;
-	@(posedge clk) reset=0;
+	@(negedge clk) reset=0;
+	@(posedge clk) 
 	@(posedge clk) 
 	@(posedge clk)
 	@(posedge clk)

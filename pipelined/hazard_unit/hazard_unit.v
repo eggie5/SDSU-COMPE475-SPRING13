@@ -65,11 +65,11 @@ module HazardUnit
 	//lw stall
 	reg lwstall;
 	always @(*) begin
-		// I changed these from OR and AND to | and & ... not sure of reprocuvions
-		lwstall = (RS_EX == RT_EX) | (RT_D == RT_EX) & MemToReg_E;
-		StallF = 1;//lwstall;
-		StallD = 1;//lwstall;
-		FlushE = 0;//~lwstall;
+		//MemToReg_E implies an LW command
+		lwstall = ((RS_D == RT_EX) || (RT_D == RT_EX)) && MemToReg_E;
+		StallF = lwstall;
+		StallD = lwstall;
+		FlushE = lwstall;
 	end
 
 endmodule
