@@ -141,7 +141,7 @@ ALU alu (ALUControlE, SrcAMux_out, SrcBE, ALUResult, alu_zero);
 //MEMWRITE REGION
 DFF #(dataWidth) mem_reg_zero (clk, 0, 1'b0, alu_zero, ZeroM);
 DFF #(dataWidth) mem_reg_alu (clk, 0, 1'b0, ALUResult, ALUOutM);
-DFF #(dataWidth) mem_reg_write_data (clk, 0, 1'b0, B, WriteDataM);
+DFF #(dataWidth) mem_reg_write_data (clk, 0, 1'b0, src_b_hax_mux_out, WriteDataM);
 DFF #(dataWidth) mem_reg_write_reg (clk, 0, 1'b0, WriteRegE, WriteRegM);
 /*DFF #(addWidth) mem_reg_pc (clk, 0, 1'b1, _PCBranchM, PCBranchM);*/
 
