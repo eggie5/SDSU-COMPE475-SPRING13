@@ -90,7 +90,7 @@ wire [dataWidth-1:0] SignImmE;
 //PC -- the width of these should be addWidth
 wire branch_signal;
 assign branch_signal = (JumpC|PCSrc);
-PCDFF #(addWidth) pc_reg (clk, reset, branch_signal, StallF, jump_mux_out, PCF);
+PCDFF #(addWidth) pc_reg (clk, reset, 0, StallF, jump_mux_out, PCF);
 assign PCPlus1F = PCF + 1;
 
 PCMUX #(addWidth) pc_mux (PCPlus1F, PCBranchD, PCSrc, pc_mux_out);
@@ -101,8 +101,8 @@ IMemory #(addWidth, dataWidth) instruction_mem (PCF, instruction);
 
 
 //DECODE REGION
-DFF #(dataWidth) decode_reg_ins (clk, 0, StallD, instruction, InstrD);
-DFF #(addWidth)  decode_reg_pc  (clk, 0, StallD, PCPlus1F, PCPlus1D); // i might need to reset this along w/ PCreg..
+DFF #(dataWidth) decode_reg_ins (clk, PCSrc, StallD, instruction, InstrD);
+DFF #(addWidth)  decode_reg_pc  (clk, PCSrc, StallD, PCPlus1F, PCPlus1D); // i might need to reset this along w/ PCreg..
 
 //Decoder
 Decoder decoder (InstrD, Opcode, A1, A2, A3, Immediate, Jump, Funct);

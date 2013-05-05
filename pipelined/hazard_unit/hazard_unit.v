@@ -5,11 +5,14 @@ module HazardUnit
 	input [4:0] RT_EX,
 	input [4:0] RS_D,
 	input [4:0] RT_D,
+	input [4:0] WriteReg_E,
 	input [4:0] WriteReg_M,
 	input [4:0] WriteReg_W,
+	input RegWrite_E,
 	input  RegWrite_M,
 	input  RegWrite_W,
 	input MemToReg_E,
+	input MemToReg_M,
 	input BranchD,
 	output reg [1:0] ForwardAE,
 	output reg [1:0] ForwardBE,
@@ -19,11 +22,8 @@ module HazardUnit
 	output reg FlushE
 );
 
-/*	if((RS !=0 ) AND (RS == WriteRegM) AND RegWriteM) then ForwardAE =10;
-	else if ((RS !=0) AND (RS == WriteRegW) AND RegWriteW) then ForwardAE=01;
-	else ForwardAE=00;*/
-	
-	//rd = rs
+
+
 	always @(*)  begin
         // Set ForwardA
         // Forward around EX hazards
@@ -58,18 +58,24 @@ module HazardUnit
 
 	// Forwarding AD, BD
 	always @(*) begin
-		ForwardAD = (RS_D != 0) & (RS_D == WriteReg_M) & RegWrite_M;
-		ForwardBD = (RT_D != 0) & (RT_D == WriteReg_M) & RegWrite_M;
+		ForwardAD = (RS_D != 0) && (RS_D == WriteReg_M) & RegWrite_M;
+		ForwardBD = (RT_D != 0) && (RT_D == WriteReg_M) & RegWrite_M;
 	end
 	
 	//lw stall
 	reg lwstall;
+	reg branchstall;
 	always @(*) begin
+	
+		//stalling for branches
+		branchstall = BranchD && RegWrite_E && (WriteReg_E == RS_D || WriteReg_E == RT_D) || BranchD && MemToReg_M
+			&& (WriteReg_M == RS_D || WriteReg_M == RT_D);
+		
 		//MemToReg_E implies an LW command
 		lwstall = ((RS_D == RT_EX) || (RT_D == RT_EX)) && MemToReg_E;
-		StallF = lwstall;
-		StallD = lwstall;
-		FlushE = lwstall;
+		StallF = lwstall || branchstall;
+		StallD = lwstall || branchstall;
+		FlushE = lwstall || branchstall;
 	end
 
 endmodule

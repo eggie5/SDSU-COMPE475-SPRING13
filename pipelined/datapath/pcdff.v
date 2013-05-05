@@ -7,16 +7,7 @@ module PCDFF #(parameter W = 32)
  output reg [W-1:0] q
 );
 
-always @(posedge clk or jumps) begin
-	$display("time=%g, q=%d, jumps=%b",$time, q, jumps);
-end
 
-always @(jumps) begin
-	if(jumps===1'b1) begin
-		$display("JUMP %g", $time);
-	 	q = 32'bx;
-	end
-end
 
 
 always @(posedge clk) begin
