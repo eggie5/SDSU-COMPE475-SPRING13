@@ -1,3 +1,7 @@
+5/5/13
+
+Finished implemention of hazard unit -- works on hmwk 6 program. Haven't tested on anything else. Pipleine fatigue...
+
 4/28/13 10:15 PM
 
 Found out I have a control hazard after the BEQ. need to flush 2 cycles if branch is taken. 
