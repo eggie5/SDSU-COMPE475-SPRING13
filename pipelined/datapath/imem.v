@@ -32,6 +32,9 @@ output [dataWidth-1:0] out //output insturction or generic data
 	`ifdef hmwk6
 		initial $readmemh("programs/hmwk6", RAM);
 	`endif
+	`ifdef fib
+		initial $readmemb("programs/fib", RAM);
+	`endif
 
 	reg [dataWidth-1:0] RAM [2**addWidth-1:0]; //this is the actual program instructions
 
